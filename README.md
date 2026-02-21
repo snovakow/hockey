@@ -1,3 +1,7 @@
+# hockey
+[Similar to](https://hockeychallengehelper.com/)
+
+[odds](https://www.rotowire.com/betting/nhl/player-props.php)
 
 # React + TypeScript + Vite
 
