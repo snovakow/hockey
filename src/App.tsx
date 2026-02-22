@@ -6,6 +6,8 @@ import { table1Data, table2Data, table3Data } from './data';
 import type { KeyNumber, RowKeyNumber, RowData } from './data';
 import { getLogo } from './logo';
 
+const darkTheme = true;
+
 type KeyString = "name";
 type RowKeyString = Record<KeyString, string>;
 
@@ -166,14 +168,14 @@ function App() {
         Click on the Vite and React logos to learn more
       </p>
       {/* Sortable Table */}
-      <div style={{ marginTop: 32 }}>
+      <div className="table-container">
         <h2>Pick #1</h2>
-        <table style={{ borderCollapse: 'collapse', width: '100%' }}>
+        <table>
           <thead>
             <tr>
               {
                 columns.map(item => (
-                  <th key={item.key} style={{ cursor: 'pointer', border: '1px solid #ccc', padding: '8px' }}
+                  <th key={item.key}
                     onClick={() => requestSort1(item.key)}>
                     {item.title} {sortConfig1?.keyOrder[0] === item.key ? '▲' : '△'}
                   </th>
@@ -184,25 +186,26 @@ function App() {
           <tbody>
             {
               sortedRows1.map((row, idx) => (
-                <tr key={idx}>
-                  <td style={{ border: '1px solid #ccc', padding: '8px' }}>{row.name}</td>
-                  <td style={{ border: '1px solid #ccc', padding: '8px' }}>{row.gg.toFixed(2)}</td>
-                  <td style={{ border: '1px solid #ccc', padding: '8px' }}>{row.bet1}</td>
-                  <td style={{ border: '1px solid #ccc', padding: '8px' }}>{row.bet2}</td>
-                  <td style={{ border: '1px solid #ccc', padding: '8px' }}>{row.bet3}</td>
-                  <td style={{ border: '1px solid #ccc', padding: '8px' }}>{row.bet4}</td>
+                // <tr key={idx} style={{ background: idx % 2 === 0 ? '#f9f9f9' : '#e6f0fa' }}>
+                <tr key={idx} className={idx % 2 === 0 ? 'row-color' : 'row-color-alt'}>
+                  <td>{row.name}</td>
+                  <td>{row.gg.toFixed(2)}</td>
+                  <td>{row.bet1}</td>
+                  <td>{row.bet2}</td>
+                  <td>{row.bet3}</td>
+                  <td>{row.bet4}</td>
                 </tr>
               ))
             }
           </tbody>
         </table>
         <h2>Pick #2</h2>
-        <table style={{ borderCollapse: 'collapse', width: '100%' }}>
+        <table>
           <thead>
             <tr>
               {
                 columns.map(item => (
-                  <th key={item.key} style={{ cursor: 'pointer', border: '1px solid #ccc', padding: '8px' }}
+                  <th key={item.key}
                     onClick={() => requestSort2(item.key)}>
                     {item.title} {sortConfig2?.keyOrder[0] === item.key ? '▲' : '△'}
                   </th>
@@ -212,24 +215,24 @@ function App() {
           </thead>
           <tbody>
             {sortedRows2.map((row, idx) => (
-              <tr key={idx}>
-                <td style={{ border: '1px solid #ccc', padding: '8px' }}>{row.name}</td>
-                <td style={{ border: '1px solid #ccc', padding: '8px' }}>{row.gg.toFixed(2)}</td>
-                <td style={{ border: '1px solid #ccc', padding: '8px' }}>{row.bet1}</td>
-                <td style={{ border: '1px solid #ccc', padding: '8px' }}>{row.bet2}</td>
-                <td style={{ border: '1px solid #ccc', padding: '8px' }}>{row.bet3}</td>
-                <td style={{ border: '1px solid #ccc', padding: '8px' }}>{row.bet4}</td>
+              <tr key={idx} className={idx % 2 === 0 ? 'row-color' : 'row-color-alt'}>
+                <td>{row.name}</td>
+                <td>{row.gg.toFixed(2)}</td>
+                <td>{row.bet1}</td>
+                <td>{row.bet2}</td>
+                <td>{row.bet3}</td>
+                <td>{row.bet4}</td>
               </tr>
             ))}
           </tbody>
         </table>
         <h2>Pick #3</h2>
-        <table style={{ borderCollapse: 'collapse', width: '100%' }}>
+        <table>
           <thead>
             <tr>
               {
                 columns.map(item => (
-                  <th key={item.key} style={{ cursor: 'pointer', border: '1px solid #ccc', padding: '8px' }}
+                  <th key={item.key}
                     onClick={() => requestSort3(item.key)}>
                     {item.title} {sortConfig3?.keyOrder[0] === item.key ? '▲' : '△'}
                   </th>
@@ -239,13 +242,13 @@ function App() {
           </thead>
           <tbody>
             {sortedRows3.map((row, idx) => (
-              <tr key={idx}>
-                <td style={{ border: '1px solid #ccc', padding: '8px' }}>{row.name}</td>
-                <td style={{ border: '1px solid #ccc', padding: '8px' }}>{row.gg.toFixed(2)}</td>
-                <td style={{ border: '1px solid #ccc', padding: '8px' }}>{row.bet1}</td>
-                <td style={{ border: '1px solid #ccc', padding: '8px' }}>{row.bet2}</td>
-                <td style={{ border: '1px solid #ccc', padding: '8px' }}>{row.bet3}</td>
-                <td style={{ border: '1px solid #ccc', padding: '8px' }}>{row.bet4}</td>
+              <tr key={idx} className={idx % 2 === 0 ? 'row-color' : 'row-color-alt'}>
+                <td>{row.name}</td>
+                <td>{row.gg.toFixed(2)}</td>
+                <td>{row.bet1}</td>
+                <td>{row.bet2}</td>
+                <td>{row.bet3}</td>
+                <td>{row.bet4}</td>
               </tr>
             ))}
           </tbody>
