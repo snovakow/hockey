@@ -65,9 +65,11 @@ th {
 .header-title {
   width: 100%;
 }
+
 .header-sort {
   opacity: 0.8;
 }
+
 .header-sort-hidden {
   opacity: 0.1;
 }

@@ -18,8 +18,38 @@ a {
   color: #646cff;
   text-decoration: inherit;
 }
+
 a:hover {
   color: #535bf2;
+}
+
+header {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  top: 0;
+  /* hsl(351, 84%, 43%); */
+  background-color: light-dark(hsl(351, 84%, 95%), hsl(351, 84%, 5%));
+  left: 0;
+  right: 0;
+  height: 4.875rem;
+  font-size: 2em;
+  font-weight: 100;
+  font-family: cursive;
+  --tes: 0.1em;
+  --test: 1.0em;
+  --test2: calc(var(--test) * -1);
+  box-shadow:
+    0 0px 0.5em 0px rgba(0, 0, 0, 1),
+
+    inset 0 var(--test2) var(--test) var(--test2) rgba(0, 0, 0, 0.5),
+    inset 0 var(--test) var(--test) var(--test2) rgba(255, 255, 255, 0.8);
+  overflow: visible;
+
+  z-index: 1;
+  text-shadow: light-dark(hsl(351, 84%, 100%), hsl(351, 84%, 43%)) 0px 0px 0.1em;
 }
 
 body {
@@ -28,6 +58,22 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+}
+
+.content {
+  position: fixed;
+  margin: 0;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  /* display: flex; */
+  /* place-items: center; */
+  /* min-width: 320px; */
+  /* min-height: 100vh; */
+  padding-top: 4.875rem;
+  margin-top: 4.875rem;
+  overflow-y: auto;
 }
 
 h1 {
@@ -46,9 +92,11 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
+
 button:hover {
   border-color: #646cff;
 }
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
@@ -59,9 +107,11 @@ button:focus-visible {
     color: #213547;
     background-color: #ffffff;
   }
+
   a:hover {
     color: #747bff;
   }
+
   button {
     background-color: #f9f9f9;
   }

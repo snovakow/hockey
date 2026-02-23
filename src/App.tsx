@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react'
 import reactLogo from './assets/react.svg'
+import viteLogo from './assets/vite.svg'
+import tsLogo from './assets/ts.png'
 import './App.css'
 import { table1Data, table2Data, table3Data } from './data';
 import type { KeyNumber, RowKeyNumber, RowData } from './data';
 import { getLogo } from './logo';
-// rgb(200, 17, 45) hsl(351, 84%, 43%)
 
 type KeyString = "name";
 type RowKeyString = Record<KeyString, string>
@@ -163,138 +164,149 @@ function App() {
   };
   const [count, setCount] = useState(0)
 
-  const rowColor = 'row-color row-color';
-  const rowColorAlt = 'row-color-alt';
+  const tsColor = darkTheme ? 'white' : 'black';
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={getLogo("TOR", darkTheme)} className="logo" alt="Team logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={getLogo("TOR", darkTheme)} className="logo react" alt="Team logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
+      <header className='header'>
+        Tims Hockey Challenge Picks
+      </header>
+      <main className='content'>
+        <div>
+          <a href="https://vite.dev" target="_blank">
+            <img src={viteLogo} className="logo" alt="Team logo" />
+          </a>
+          <a href="https://react.dev" target="_blank">
+            <img src={reactLogo} className="logo react" alt="Team logo" />
+          </a>
+          <a href="https://www.typescriptlang.org" target="_blank">
+            <img src={tsLogo} className="logo react" alt="Team logo" />
+          </a>
+        </div>
+        <h1>Vite + React</h1>
+        <div className="card">
+          <button onClick={() => setCount((count) => count + 1)}>
+            count is {count}
+          </button>
+          <p>
+            Edit <code>src/App.tsx</code> and save to test HMR
+          </p>
+        </div>
+        <p className="read-the-docs">
+          Click on the Vite and React logos to learn more
         </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-      {/* Sortable Table */}
-      <div className="table-container">
-        <h2>Pick #1</h2>
-        <table>
-          <thead>
-            <tr>
-              {
-                columns.map(item => (
-                  <th key={item.key}
-                    onClick={() => requestSort1(item.key)}>
-                    <span className='cell-container'>
-                      <span className='header-title'>{item.title}</span>
-                      <span className={sortConfig1?.keyOrder[0] === item.key ? 'header-sort' : 'header-sort-hidden'}>▲</span>
-                    </span>
-                  </th>
-                ))
-              }
-            </tr>
-          </thead>
-          <tbody>
-            {sortedRows1.map((row, idx) => (
-              <tr key={idx} className={idx % 2 === 0 ? 'row-color' : 'row-color-alt'}>
-                <td>
-                  <span className='cell-container'>
-                    <img className='td-name-logo' src={darkTheme ? row.logoDark : row.logoLight} />
-                    {row.name}
-                  </span>
-                </td>
-                <td>{row.gg.toFixed(2)}</td>
-                <td>{row.bet1}</td>
-                <td>{row.bet2}</td>
-                <td>{row.bet3}</td>
-                <td>{row.bet4}</td>
+        {/* Sortable Table */}
+        <div className="table-container">
+          <h2>Pick #1</h2>
+          <table>
+            <thead>
+              <tr>
+                {
+                  columns.map(item => (
+                    <th key={item.key}
+                      onClick={() => requestSort1(item.key)}>
+                      <span className='cell-container'>
+                        <span className='header-title'>{item.title}</span>
+                        <span className={sortConfig1?.keyOrder[0] === item.key ? 'header-sort' : 'header-sort-hidden'}>▲</span>
+                      </span>
+                    </th>
+                  ))
+                }
               </tr>
-            ))}
-          </tbody>
-        </table>
-        <h2>Pick #2</h2>
-        <table>
-          <thead>
-            <tr>
-              {
-                columns.map(item => (
-                  <th key={item.key}
-                    onClick={() => requestSort2(item.key)}>
+            </thead>
+            <tbody>
+              {sortedRows1.map((row, idx) => (
+                <tr key={idx} className={idx % 2 === 0 ? 'row-color' : 'row-color-alt'}>
+                  <td>
                     <span className='cell-container'>
-                      <span className='header-title'>{item.title}</span>
-                      <span className={sortConfig2?.keyOrder[0] === item.key ? 'header-sort' : 'header-sort-hidden'}>▲</span>
+                      <img className='td-name-logo' src={darkTheme ? row.logoDark : row.logoLight} />
+                      {row.name}
                     </span>
-                  </th>
-                ))
-              }
-            </tr>
-          </thead>
-          <tbody>
-            {sortedRows2.map((row, idx) => (
-              <tr key={idx} className={idx % 2 === 0 ? rowColor : rowColorAlt}>
-                <td>
-                  <span className='cell-container'>
-                    <img className='td-name-logo' src={darkTheme ? row.logoDark : row.logoLight} />
-                    {row.name}
-                  </span>
-                </td>
-                <td>{row.gg.toFixed(2)}</td>
-                <td>{row.bet1}</td>
-                <td>{row.bet2}</td>
-                <td>{row.bet3}</td>
-                <td>{row.bet4}</td>
+                  </td>
+                  <td>{row.gg.toFixed(2)}</td>
+                  <td>{row.bet1}</td>
+                  <td>{row.bet2}</td>
+                  <td>{row.bet3}</td>
+                  <td>{row.bet4}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <div className="table-container">
+          <h2>Pick #2</h2>
+          <table>
+            <thead>
+              <tr>
+                {
+                  columns.map(item => (
+                    <th key={item.key}
+                      onClick={() => requestSort2(item.key)}>
+                      <span className='cell-container'>
+                        <span className='header-title'>{item.title}</span>
+                        <span className={sortConfig2?.keyOrder[0] === item.key ? 'header-sort' : 'header-sort-hidden'}>▲</span>
+                      </span>
+                    </th>
+                  ))
+                }
               </tr>
-            ))}
-          </tbody>
-        </table>
-        <h2>Pick #3</h2>
-        <table>
-          <thead>
-            <tr>
-              {
-                columns.map(item => (
-                  <th key={item.key}
-                    onClick={() => requestSort3(item.key)}>
+            </thead>
+            <tbody>
+              {sortedRows2.map((row, idx) => (
+                <tr key={idx} className={idx % 2 === 0 ? 'row-color' : 'row-color-alt'}>
+                  <td>
                     <span className='cell-container'>
-                      <span className='header-title'>{item.title}</span>
-                      <span className={sortConfig3?.keyOrder[0] === item.key ? 'header-sort' : 'header-sort-hidden'}>▲</span>
+                      <img className='td-name-logo' src={darkTheme ? row.logoDark : row.logoLight} />
+                      {row.name}
                     </span>
-                  </th>
-                ))
-              }
-            </tr>
-          </thead>
-          <tbody>
-            {sortedRows3.map((row, idx) => (
-              <tr key={idx} className={idx % 2 === 0 ? rowColor : rowColorAlt}>
-                <td>
-                  <span className='cell-container'>
-                    <img className='td-name-logo' src={darkTheme ? row.logoDark : row.logoLight} />
-                    {row.name}
-                  </span>
-                </td>
-                <td>{row.gg.toFixed(2)}</td>
-                <td>{row.bet1}</td>
-                <td>{row.bet2}</td>
-                <td>{row.bet3}</td>
-                <td>{row.bet4}</td>
+                  </td>
+                  <td>{row.gg.toFixed(2)}</td>
+                  <td>{row.bet1}</td>
+                  <td>{row.bet2}</td>
+                  <td>{row.bet3}</td>
+                  <td>{row.bet4}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <div className="table-container">
+          <h2>Pick #3</h2>
+          <table>
+            <thead>
+              <tr>
+                {
+                  columns.map(item => (
+                    <th key={item.key}
+                      onClick={() => requestSort3(item.key)}>
+                      <span className='cell-container'>
+                        <span className='header-title'>{item.title}</span>
+                        <span className={sortConfig3?.keyOrder[0] === item.key ? 'header-sort' : 'header-sort-hidden'}>▲</span>
+                      </span>
+                    </th>
+                  ))
+                }
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+            </thead>
+            <tbody>
+              {sortedRows3.map((row, idx) => (
+                <tr key={idx} className={idx % 2 === 0 ? 'row-color' : 'row-color-alt'}>
+                  <td>
+                    <span className='cell-container'>
+                      <img className='td-name-logo' src={darkTheme ? row.logoDark : row.logoLight} />
+                      {row.name}
+                    </span>
+                  </td>
+                  <td>{row.gg.toFixed(2)}</td>
+                  <td>{row.bet1}</td>
+                  <td>{row.bet2}</td>
+                  <td>{row.bet3}</td>
+                  <td>{row.bet4}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </main>
     </>
   )
 }
