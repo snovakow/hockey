@@ -1,19 +1,20 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 import { table1Data, table2Data, table3Data } from './data';
 import type { KeyNumber, RowKeyNumber, RowData } from './data';
 import { getLogo } from './logo';
-
-const darkTheme = true;
+// rgb(200, 17, 45) hsl(351, 84%, 43%)
 
 type KeyString = "name";
-type RowKeyString = Record<KeyString, string>;
+type RowKeyString = Record<KeyString, string>
+  & Record<"logoLight", string>
+  & Record<"logoDark", string>
+  & Record<"rawOrder", number>;
 
 type KeyType = KeyString | KeyNumber;
 
-type RowKey = RowKeyString & RowKeyNumber & Record<"rawOrder", number>;
+type RowKey = RowKeyString & RowKeyNumber;
 type OrderKeyType = KeyType | "rawOrder";
 
 interface ColumnData {
@@ -30,11 +31,13 @@ const columns: ColumnData[] = [
   { key: "bet4", title: "Bet4" },
 ];
 
-const makeRows = (data: RowData[]): RowKey[] => {
+const makeRows = (data: RowData[], isDark: boolean): RowKey[] => {
   return data.map((item, index) => {
     return {
       rawOrder: index,
       name: `${item.lastName}, ${item.firstName}`,
+      logoLight: getLogo(item.team, false),
+      logoDark: getLogo(item.team, true),
       gg: item.gg,
       bet1: item.bet1,
       bet2: item.bet2,
@@ -43,10 +46,6 @@ const makeRows = (data: RowData[]): RowKey[] => {
     }
   });
 }
-
-const table1Rows = makeRows(table1Data);
-const table2Rows = makeRows(table2Data);
-const table3Rows = makeRows(table3Data);
 
 interface SortConfig {
   keyOrder: KeyType[];
@@ -71,7 +70,16 @@ const sortFunction = (sortConfig: SortConfig) => {
 }
 
 function App() {
-  // Table data and sorting
+  // Theme state
+  const [darkTheme, setDarkTheme] = useState(() => {
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+  });
+
+  // Table data and sorting - regenerate when theme changes
+  const table1Rows = makeRows(table1Data, darkTheme);
+  const table2Rows = makeRows(table2Data, darkTheme);
+  const table3Rows = makeRows(table3Data, darkTheme);
+
   const [rows1, setRows1] = useState(table1Rows);
   const sortedRows1 = [...rows1];
 
@@ -80,6 +88,16 @@ function App() {
 
   const [rows3, setRows3] = useState(table3Rows);
   const sortedRows3 = [...rows3];
+
+  // Update theme when system preference changes
+  useEffect(() => {
+    const darkModeMql = window.matchMedia('(prefers-color-scheme: dark)');
+    const handleChange = (event: MediaQueryListEvent) => {
+      setDarkTheme(event.matches);
+    };
+    darkModeMql.addEventListener('change', handleChange);
+    return () => darkModeMql.removeEventListener('change', handleChange);
+  }, []);
 
   const [sortConfig1, setSortConfig1] = useState<SortConfig | null>(null);
   const [sortConfig2, setSortConfig2] = useState<SortConfig | null>(null);
@@ -145,14 +163,16 @@ function App() {
   };
   const [count, setCount] = useState(0)
 
+  const rowColor = 'row-color row-color';
+  const rowColorAlt = 'row-color-alt';
   return (
     <>
       <div>
         <a href="https://vite.dev" target="_blank">
-          <img src={getLogo("TOR", false)} className="logo" alt="Team logo" />
+          <img src={getLogo("TOR", darkTheme)} className="logo" alt="Team logo" />
         </a>
         <a href="https://react.dev" target="_blank">
-          <img src={getLogo("TOR", true)} className="logo react" alt="Team logo" />
+          <img src={getLogo("TOR", darkTheme)} className="logo react" alt="Team logo" />
         </a>
       </div>
       <h1>Vite + React</h1>
@@ -177,26 +197,31 @@ function App() {
                 columns.map(item => (
                   <th key={item.key}
                     onClick={() => requestSort1(item.key)}>
-                    {item.title} {sortConfig1?.keyOrder[0] === item.key ? '▲' : '△'}
+                    <span className='cell-container'>
+                      <span className='header-title'>{item.title}</span>
+                      <span className={sortConfig1?.keyOrder[0] === item.key ? 'header-sort' : 'header-sort-hidden'}>▲</span>
+                    </span>
                   </th>
                 ))
               }
             </tr>
           </thead>
           <tbody>
-            {
-              sortedRows1.map((row, idx) => (
-                // <tr key={idx} style={{ background: idx % 2 === 0 ? '#f9f9f9' : '#e6f0fa' }}>
-                <tr key={idx} className={idx % 2 === 0 ? 'row-color' : 'row-color-alt'}>
-                  <td>{row.name}</td>
-                  <td>{row.gg.toFixed(2)}</td>
-                  <td>{row.bet1}</td>
-                  <td>{row.bet2}</td>
-                  <td>{row.bet3}</td>
-                  <td>{row.bet4}</td>
-                </tr>
-              ))
-            }
+            {sortedRows1.map((row, idx) => (
+              <tr key={idx} className={idx % 2 === 0 ? 'row-color' : 'row-color-alt'}>
+                <td>
+                  <span className='cell-container'>
+                    <img className='td-name-logo' src={darkTheme ? row.logoDark : row.logoLight} />
+                    {row.name}
+                  </span>
+                </td>
+                <td>{row.gg.toFixed(2)}</td>
+                <td>{row.bet1}</td>
+                <td>{row.bet2}</td>
+                <td>{row.bet3}</td>
+                <td>{row.bet4}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
         <h2>Pick #2</h2>
@@ -207,7 +232,10 @@ function App() {
                 columns.map(item => (
                   <th key={item.key}
                     onClick={() => requestSort2(item.key)}>
-                    {item.title} {sortConfig2?.keyOrder[0] === item.key ? '▲' : '△'}
+                    <span className='cell-container'>
+                      <span className='header-title'>{item.title}</span>
+                      <span className={sortConfig2?.keyOrder[0] === item.key ? 'header-sort' : 'header-sort-hidden'}>▲</span>
+                    </span>
                   </th>
                 ))
               }
@@ -215,8 +243,13 @@ function App() {
           </thead>
           <tbody>
             {sortedRows2.map((row, idx) => (
-              <tr key={idx} className={idx % 2 === 0 ? 'row-color' : 'row-color-alt'}>
-                <td>{row.name}</td>
+              <tr key={idx} className={idx % 2 === 0 ? rowColor : rowColorAlt}>
+                <td>
+                  <span className='cell-container'>
+                    <img className='td-name-logo' src={darkTheme ? row.logoDark : row.logoLight} />
+                    {row.name}
+                  </span>
+                </td>
                 <td>{row.gg.toFixed(2)}</td>
                 <td>{row.bet1}</td>
                 <td>{row.bet2}</td>
@@ -234,7 +267,10 @@ function App() {
                 columns.map(item => (
                   <th key={item.key}
                     onClick={() => requestSort3(item.key)}>
-                    {item.title} {sortConfig3?.keyOrder[0] === item.key ? '▲' : '△'}
+                    <span className='cell-container'>
+                      <span className='header-title'>{item.title}</span>
+                      <span className={sortConfig3?.keyOrder[0] === item.key ? 'header-sort' : 'header-sort-hidden'}>▲</span>
+                    </span>
                   </th>
                 ))
               }
@@ -242,8 +278,13 @@ function App() {
           </thead>
           <tbody>
             {sortedRows3.map((row, idx) => (
-              <tr key={idx} className={idx % 2 === 0 ? 'row-color' : 'row-color-alt'}>
-                <td>{row.name}</td>
+              <tr key={idx} className={idx % 2 === 0 ? rowColor : rowColorAlt}>
+                <td>
+                  <span className='cell-container'>
+                    <img className='td-name-logo' src={darkTheme ? row.logoDark : row.logoLight} />
+                    {row.name}
+                  </span>
+                </td>
                 <td>{row.gg.toFixed(2)}</td>
                 <td>{row.bet1}</td>
                 <td>{row.bet2}</td>
@@ -259,4 +300,3 @@ function App() {
 }
 
 export default App
-

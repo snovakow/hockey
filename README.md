@@ -3,6 +3,8 @@
 
 [odds](https://www.rotowire.com/betting/nhl/player-props.php)
 
+Reacts adaptively to light-dark scheme
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
