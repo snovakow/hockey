@@ -1,20 +1,12 @@
-import type { Team } from "./logo";
-
-type DataString = "firstName" | "lastName";
-type RowDataString = Record<DataString, string>;
-
-export type KeyNumber = "gg" | "bet1" | "bet2" | "bet3" | "bet4";
-export type RowKeyNumber = Record<KeyNumber, number>;
-
-export type RowData = RowDataString & RowKeyNumber & { team: Team };
+import type { RowData } from "./components/Table";
 
 export const table1Data: RowData[] = [
     {
         firstName: "Anze",
         lastName: "Kopitar",
         team: "LAK",
-        gg: 0.2,
-        bet1: 200,
+        gg: 0.8,
+        bet1: -120,
         bet2: 220,
         bet3: 200,
         bet4: 200

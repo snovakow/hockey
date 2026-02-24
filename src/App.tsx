@@ -4,18 +4,10 @@ import viteLogo from './assets/vite.svg'
 import tsLogo from './assets/ts.png'
 import './App.css'
 import { table1Data, table2Data, table3Data } from './data';
-import type { KeyNumber, RowKeyNumber, RowData } from './data';
-import { getLogo } from './logo';
+import { getLogo } from './components/logo';
+import Table from './components/Table'
+import type { RowData, KeyType, RowKey } from './components/Table';
 
-type KeyString = "name";
-type RowKeyString = Record<KeyString, string>
-  & Record<"logoLight", string>
-  & Record<"logoDark", string>
-  & Record<"rawOrder", number>;
-
-type KeyType = KeyString | KeyNumber;
-
-type RowKey = RowKeyString & RowKeyNumber;
 type OrderKeyType = KeyType | "rawOrder";
 
 interface ColumnData {
@@ -32,6 +24,29 @@ const columns: ColumnData[] = [
   { key: "bet4", title: "Bet4" },
 ];
 
+const rountdTo = (num: number, places: number): number => {
+  const factor = Math.pow(10, places);
+  return Math.round(num * factor) / factor;
+}
+
+// Poisson distribution chance of 0 goals: e^(−μ)
+// Chance of at least one goal: 1 − e^(−μ)
+const ggChance = (x: number): string => {
+  const chance = 1 - Math.exp(-x);
+  return rountdTo(chance * 100, 2) + "%";
+}
+
+// Implied Odds
+const betChance = (x: number): string => {
+  let chance;
+  if (x < 0) {
+    chance = -x / (100 - x);
+  } else {
+    chance = 100 / (x + 100);
+  }
+  return rountdTo(chance * 100, 2) + "%";
+}
+
 const makeRows = (data: RowData[], isDark: boolean): RowKey[] => {
   return data.map((item, index) => {
     return {
@@ -40,7 +55,9 @@ const makeRows = (data: RowData[], isDark: boolean): RowKey[] => {
       logoLight: getLogo(item.team, false),
       logoDark: getLogo(item.team, true),
       gg: item.gg,
+      ggChance: ggChance(item.gg),
       bet1: item.bet1,
+      betChance1: betChance(item.bet1),
       bet2: item.bet2,
       bet3: item.bet3,
       bet4: item.bet4,
@@ -197,117 +214,15 @@ function App() {
         {/* Sortable Table */}
         <div className="table-container">
           <h2>Pick #1</h2>
-          <table>
-            <thead>
-              <tr>
-                {
-                  columns.map(item => (
-                    <th key={item.key}
-                      onClick={() => requestSort1(item.key)}>
-                      <span className='cell-container'>
-                        <span className='header-pad'>▲</span>
-                        <span className='header-title'>{item.title}</span>
-                        <span className={sortConfig1?.keyOrder[0] === item.key ? 'header-sort' : 'header-sort-hidden'}>▲</span>
-                      </span>
-                    </th>
-                  ))
-                }
-              </tr>
-            </thead>
-            <tbody>
-              {sortedRows1.map((row, idx) => (
-                <tr key={idx} className={idx % 2 === 0 ? 'row-color' : 'row-color-alt'}>
-                  <td>
-                    <span className='cell-container'>
-                      <img className='td-name-logo' src={darkTheme ? row.logoDark : row.logoLight} />
-                      {row.name}
-                    </span>
-                  </td>
-                  <td>{row.gg.toFixed(2)}</td>
-                  <td>{row.bet1}</td>
-                  <td>{row.bet2}</td>
-                  <td>{row.bet3}</td>
-                  <td>{row.bet4}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <Table columns={columns} sortedRows={sortedRows1} requestSort={requestSort1} sortConfig={sortConfig1} darkTheme={darkTheme} />
         </div>
         <div className="table-container">
           <h2>Pick #2</h2>
-          <table>
-            <thead>
-              <tr>
-                {
-                  columns.map(item => (
-                    <th key={item.key}
-                      onClick={() => requestSort2(item.key)}>
-                      <span className='cell-container'>
-                        <span className='header-pad'>▲</span>
-                        <span className='header-title'>{item.title}</span>
-                        <span className={sortConfig2?.keyOrder[0] === item.key ? 'header-sort' : 'header-sort-hidden'}>▲</span>
-                      </span>
-                    </th>
-                  ))
-                }
-              </tr>
-            </thead>
-            <tbody>
-              {sortedRows2.map((row, idx) => (
-                <tr key={idx} className={idx % 2 === 0 ? 'row-color' : 'row-color-alt'}>
-                  <td>
-                    <span className='cell-container'>
-                      <img className='td-name-logo' src={darkTheme ? row.logoDark : row.logoLight} />
-                      {row.name}
-                    </span>
-                  </td>
-                  <td>{row.gg.toFixed(2)}</td>
-                  <td>{row.bet1}</td>
-                  <td>{row.bet2}</td>
-                  <td>{row.bet3}</td>
-                  <td>{row.bet4}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <Table columns={columns} sortedRows={sortedRows2} requestSort={requestSort2} sortConfig={sortConfig2} darkTheme={darkTheme} />
         </div>
         <div className="table-container">
           <h2>Pick #3</h2>
-          <table>
-            <thead>
-              <tr>
-                {
-                  columns.map(item => (
-                    <th key={item.key}
-                      onClick={() => requestSort3(item.key)}>
-                      <span className='cell-container'>
-                        <span className='header-pad'>▲</span>
-                        <span className='header-title'>{item.title}</span>
-                        <span className={sortConfig3?.keyOrder[0] === item.key ? 'header-sort' : 'header-sort-hidden'}>▲</span>
-                      </span>
-                    </th>
-                  ))
-                }
-              </tr>
-            </thead>
-            <tbody>
-              {sortedRows3.map((row, idx) => (
-                <tr key={idx} className={idx % 2 === 0 ? 'row-color' : 'row-color-alt'}>
-                  <td>
-                    <span className='cell-container'>
-                      <img className='td-name-logo' src={darkTheme ? row.logoDark : row.logoLight} />
-                      {row.name}
-                    </span>
-                  </td>
-                  <td>{row.gg.toFixed(2)}</td>
-                  <td>{row.bet1}</td>
-                  <td>{row.bet2}</td>
-                  <td>{row.bet3}</td>
-                  <td>{row.bet4}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <Table columns={columns} sortedRows={sortedRows3} requestSort={requestSort3} sortConfig={sortConfig3} darkTheme={darkTheme} />
         </div>
       </main>
     </>
