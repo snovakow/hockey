@@ -31,7 +31,7 @@ header {
   gap: 1rem;
   top: 0;
   /* hsl(351, 84%, 43%); */
-  background-color: light-dark(hsl(351, 84%, 95%), hsl(351, 84%, 5%));
+  background-color: light-dark(hsl(351, 84%, 95%), hsl(351, 84%, 25%));
   left: 0;
   right: 0;
   height: 4.875rem;
@@ -42,10 +42,10 @@ header {
   --test: 1.0em;
   --test2: calc(var(--test) * -1);
   box-shadow:
-    0 0px 0.5em 0px rgba(0, 0, 0, 1),
+    0 0px 0.5em 0px light-dark(rgba(0, 0, 0, 1), hsl(351, 84%, 0%, 1)),
 
-    inset 0 var(--test2) var(--test) var(--test2) rgba(0, 0, 0, 0.5),
-    inset 0 var(--test) var(--test) var(--test2) rgba(255, 255, 255, 0.8);
+    inset 0 var(--test) var(--test) var(--test2) light-dark(rgba(255, 255, 255, 0.8), hsl(351, 84%, 80%, 1)),
+    inset 0 var(--test2) var(--test) var(--test2) light-dark(rgba(0, 0, 0, 0.5), hsl(351, 84%, 0%, 0.5));
   overflow: visible;
 
   z-index: 1;
