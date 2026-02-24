@@ -62,6 +62,10 @@ th {
   /* color: #fff; */
 }
 
+.header-pad {
+  visibility: hidden;
+}
+
 .header-title {
   width: 100%;
 }

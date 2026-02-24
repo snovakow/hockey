@@ -205,6 +205,7 @@ function App() {
                     <th key={item.key}
                       onClick={() => requestSort1(item.key)}>
                       <span className='cell-container'>
+                        <span className='header-pad'>▲</span>
                         <span className='header-title'>{item.title}</span>
                         <span className={sortConfig1?.keyOrder[0] === item.key ? 'header-sort' : 'header-sort-hidden'}>▲</span>
                       </span>
@@ -242,6 +243,7 @@ function App() {
                     <th key={item.key}
                       onClick={() => requestSort2(item.key)}>
                       <span className='cell-container'>
+                        <span className='header-pad'>▲</span>
                         <span className='header-title'>{item.title}</span>
                         <span className={sortConfig2?.keyOrder[0] === item.key ? 'header-sort' : 'header-sort-hidden'}>▲</span>
                       </span>
@@ -279,6 +281,7 @@ function App() {
                     <th key={item.key}
                       onClick={() => requestSort3(item.key)}>
                       <span className='cell-container'>
+                        <span className='header-pad'>▲</span>
                         <span className='header-title'>{item.title}</span>
                         <span className={sortConfig3?.keyOrder[0] === item.key ? 'header-sort' : 'header-sort-hidden'}>▲</span>
                       </span>
