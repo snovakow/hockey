@@ -48,7 +48,7 @@ const betChance = (x: number): string => {
 }
 
 const makeRows = (data: RowData[], isDark: boolean): RowKey[] => {
-  return data.map((item, index) => {
+  return data.map((item: RowData, index: number): RowKey => {
     return {
       rawOrder: index,
       name: `${item.lastName}, ${item.firstName}`,
@@ -59,8 +59,11 @@ const makeRows = (data: RowData[], isDark: boolean): RowKey[] => {
       bet1: item.bet1,
       betChance1: betChance(item.bet1),
       bet2: item.bet2,
+      betChance2: betChance(item.bet2),
       bet3: item.bet3,
+      betChance3: betChance(item.bet3),
       bet4: item.bet4,
+      betChance4: betChance(item.bet4),
     }
   });
 }
@@ -70,13 +73,13 @@ interface SortConfig {
 }
 
 const sortFunction = (sortConfig: SortConfig) => {
-  return (a: RowKey, b: RowKey) => {
+  return (a: RowKey, b: RowKey): number => {
     const keyOrder: OrderKeyType[] = [...sortConfig.keyOrder, "rawOrder"];
     for (const key of keyOrder) {
       const aVal = a[key];
       const bVal = b[key];
       if (typeof aVal === 'number' && typeof bVal === 'number') {
-        if (aVal !== bVal) return aVal - bVal;
+        if (aVal !== bVal) return key === 'gg' ? bVal - aVal : aVal - bVal;
       }
       if (typeof aVal === 'string' && typeof bVal === 'string') {
         const comparison = aVal.localeCompare(bVal, undefined, { sensitivity: 'base' });
@@ -181,7 +184,7 @@ function App() {
   };
   const [count, setCount] = useState(0)
 
-  const tsColor = darkTheme ? 'white' : 'black';
+  const chances = true;
   return (
     <>
       <header className='header'>
@@ -214,15 +217,15 @@ function App() {
         {/* Sortable Table */}
         <div className="table-container">
           <h2>Pick #1</h2>
-          <Table columns={columns} sortedRows={sortedRows1} requestSort={requestSort1} sortConfig={sortConfig1} darkTheme={darkTheme} />
+          <Table columns={columns} sortedRows={sortedRows1} requestSort={requestSort1} sortConfig={sortConfig1} darkTheme={darkTheme} chances={chances} />
         </div>
         <div className="table-container">
           <h2>Pick #2</h2>
-          <Table columns={columns} sortedRows={sortedRows2} requestSort={requestSort2} sortConfig={sortConfig2} darkTheme={darkTheme} />
+          <Table columns={columns} sortedRows={sortedRows2} requestSort={requestSort2} sortConfig={sortConfig2} darkTheme={darkTheme} chances={chances} />
         </div>
         <div className="table-container">
           <h2>Pick #3</h2>
-          <Table columns={columns} sortedRows={sortedRows3} requestSort={requestSort3} sortConfig={sortConfig3} darkTheme={darkTheme} />
+          <Table columns={columns} sortedRows={sortedRows3} requestSort={requestSort3} sortConfig={sortConfig3} darkTheme={darkTheme} chances={chances} />
         </div>
       </main>
     </>

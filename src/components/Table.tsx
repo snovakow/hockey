@@ -10,7 +10,12 @@ type KeyString = "name";
 type RowKeyString = Record<KeyString, string>
     & Record<"logoLight", string>
     & Record<"logoDark", string>
-    & Record<"rawOrder", number>;
+    & Record<"rawOrder", number>
+    & Record<"ggChance", string>
+    & Record<"betChance1", string>
+    & Record<"betChance2", string>
+    & Record<"betChance3", string>
+    & Record<"betChance4", string>;
 
 export type RowData = RowDataString & RowKeyNumber & { team: Team };
 export type KeyType = KeyString | KeyNumber;
@@ -21,9 +26,10 @@ export default function Table(props: {
     sortedRows: RowKey[]
     requestSort: (key: KeyType) => void,
     sortConfig: { keyOrder: KeyType[] } | null,
-    darkTheme: boolean
+    darkTheme: boolean,
+    chances: boolean
 }) {
-    const { columns, sortedRows, requestSort, sortConfig, darkTheme } = props;
+    const { columns, sortedRows, requestSort, sortConfig, darkTheme, chances } = props;
     return (
         <table>
             <thead>
@@ -51,13 +57,11 @@ export default function Table(props: {
                                 {row.name}
                             </span>
                         </td>
-                        <td>{row.gg.toFixed(2)}</td>
-                        <td>{row.ggChance}</td>
-                        <td>{row.bet1}</td>
-                        <td>{row.betChance1}</td>
-                        <td>{row.bet2}</td>
-                        <td>{row.bet3}</td>
-                        <td>{row.bet4}</td>
+                        <td>{chances ? row.ggChance : row.gg.toFixed(2)}</td>
+                        <td>{chances ? row.betChance1 : row.bet1}</td>
+                        <td>{chances ? row.betChance2 : row.bet2}</td>
+                        <td>{chances ? row.betChance3 : row.bet3}</td>
+                        <td>{chances ? row.betChance4 : row.bet4}</td>
                     </tr>
                 ))}
             </tbody>

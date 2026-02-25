@@ -5,9 +5,9 @@ export const table1Data: RowData[] = [
         firstName: "Anze",
         lastName: "Kopitar",
         team: "LAK",
-        gg: 0.8,
+        gg: 6/41,
         bet1: -120,
-        bet2: 220,
+        bet2: -140,
         bet3: 200,
         bet4: 200
     }, {
@@ -15,7 +15,7 @@ export const table1Data: RowData[] = [
         lastName: "Smith",
         team: "VGK",
         gg: 0.21,
-        bet1: 210,
+        bet1: -140,
         bet2: 220,
         bet3: 200,
         bet4: 200
