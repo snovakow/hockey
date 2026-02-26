@@ -33,6 +33,9 @@ const ggChance = (x: number): string => {
 
 // Implied Odds
 const betChance = (x: number): string => {
+  if (x === 0) {
+    return "-";
+  }
   let chance;
   if (x < 0) {
     chance = -x / (100 - x);
@@ -70,7 +73,15 @@ const sortFunction = (sortConfig: SortConfig) => {
       const aVal = a[key];
       const bVal = b[key];
       if (typeof aVal === 'number' && typeof bVal === 'number') {
-        if (aVal !== bVal) return key === 'gg' ? bVal - aVal : aVal - bVal;
+        if (key === 'gg') {
+          if (aVal !== bVal) return bVal - aVal;
+        } else {
+          if (aVal !== bVal) {
+            if (aVal === 0) return 1;
+            if (bVal === 0) return -1;
+            return aVal - bVal;
+          }
+        }
       }
       if (typeof aVal === 'string' && typeof bVal === 'string') {
         const comparison = aVal.localeCompare(bVal, undefined, { sensitivity: 'base' });

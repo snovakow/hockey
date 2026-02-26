@@ -67,10 +67,10 @@ export default function Table(props: {
                             </span>
                         </td>
                         <td>{chances ? row.ggChance : row.gg.toFixed(2)}</td>
-                        <td>{chances ? row.betChance1 : row.bet1}</td>
-                        <td>{chances ? row.betChance2 : row.bet2}</td>
-                        <td>{chances ? row.betChance3 : row.bet3}</td>
-                        <td>{chances ? row.betChance4 : row.bet4}</td>
+                        <td>{chances ? row.betChance1 : (row.bet1 || "-")}</td>
+                        <td>{chances ? row.betChance2 : (row.bet2 || "-")}</td>
+                        <td>{chances ? row.betChance3 : (row.bet3 || "-")}</td>
+                        <td>{chances ? row.betChance4 : (row.bet4 || "-")}</td>
                     </tr>
                 ))}
             </tbody>
