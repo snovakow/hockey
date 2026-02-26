@@ -187,7 +187,7 @@ function App() {
   const chances = true;
   return (
     <>
-      <header className='header'>
+      <header className='header satisfy-regular'>
         Tims Hockey Challenge Picks
       </header>
       <main className='content'>
