@@ -48,13 +48,14 @@ const betChance = (x: number): string => {
 
 const makeRows = (data: RowData[]): RowKey[] => {
   return data.map((item: RowData, index: number): RowKey => {
+    const gg = item.goals / item.gamesPlayed;
     return {
       rawOrder: index,
       name: `${item.lastName}, ${item.firstName}`,
       logoLight: getLogo(item.team, false),
       logoDark: getLogo(item.team, true),
-      gg: item.gg,
-      ggChance: ggChance(item.gg),
+      gg: gg,
+      ggChance: ggChance(gg),
       bet1: item.bet1,
       betChance1: betChance(item.bet1),
       bet2: item.bet2,

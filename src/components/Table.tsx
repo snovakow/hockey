@@ -15,7 +15,17 @@ type RowKeyString = Record<KeyString, string>
     & Record<"betChance3", string>
     & Record<"betChance4", string>;
 
-export type RowData = RowDataString & RowKeyNumber & { team: Team };
+export type RowData = {
+    firstName: string,
+    lastName: string,
+    team: Team,
+    goals: number,
+    gamesPlayed: number,
+    bet1: number,
+    bet2: number,
+    bet3: number,
+    bet4: number
+};
 export type KeyType = KeyString | KeyNumber | "gg";
 export type RowKey = RowKeyString & RowKeyNumber & { gg: number };
 
