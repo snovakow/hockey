@@ -93,6 +93,18 @@ const sortFunction = (sortConfig: SortConfig) => {
   }
 }
 
+const makeSort = (sortConfig: SortConfig, setSortConfig: (config: SortConfig) => void) => {
+  return (keyPrimary: KeyType) => {
+    if (sortConfig.keyOrder[0] === keyPrimary) return;
+    const keyOrder = [keyPrimary];
+    for (const key of sortConfig.keyOrder) {
+      if (key === keyPrimary) continue;
+      keyOrder.push(key);
+    }
+    setSortConfig({ keyOrder });
+  };
+}
+
 const table1Data: RowData[] = playerData.playerLists[0].players as RowData[];
 const table2Data: RowData[] = playerData.playerLists[1].players as RowData[];
 const table3Data: RowData[] = playerData.playerLists[2].players as RowData[];
@@ -127,68 +139,17 @@ function App() {
     return () => darkModeMql.removeEventListener('change', handleChange);
   }, []);
 
-  const [sortConfig1, setSortConfig1] = useState<SortConfig | null>(null);
-  const [sortConfig2, setSortConfig2] = useState<SortConfig | null>(null);
-  const [sortConfig3, setSortConfig3] = useState<SortConfig | null>(null);
+  const [sortConfig1, setSortConfig1] = useState<SortConfig>({ keyOrder: ['gg'] });
+  const [sortConfig2, setSortConfig2] = useState<SortConfig>({ keyOrder: ['gg'] });
+  const [sortConfig3, setSortConfig3] = useState<SortConfig>({ keyOrder: ['gg'] });
 
-  if (sortConfig1 !== null) {
-    sortedRows1.sort(sortFunction(sortConfig1));
-  }
-  if (sortConfig2 !== null) {
-    sortedRows2.sort(sortFunction(sortConfig2));
-  }
-  if (sortConfig3 !== null) {
-    sortedRows3.sort(sortFunction(sortConfig3));
-  }
+  sortedRows1.sort(sortFunction(sortConfig1));
+  sortedRows2.sort(sortFunction(sortConfig2));
+  sortedRows3.sort(sortFunction(sortConfig3));
 
-  const requestSort1: RequestSort = (keyPrimary: KeyType) => {
-    if (!sortConfig1) {
-      setSortConfig1({ keyOrder: [keyPrimary] });
-      return;
-    }
-    if (sortConfig1.keyOrder[0] === keyPrimary) {
-      setSortConfig1(null);
-      return;
-    }
-    const keyOrder = [keyPrimary];
-    for (const key of sortConfig1.keyOrder) {
-      if (key === keyPrimary) continue;
-      keyOrder.push(key);
-    }
-    setSortConfig1({ keyOrder });
-  };
-  const requestSort2: RequestSort = (keyPrimary: KeyType) => {
-    if (!sortConfig2) {
-      setSortConfig2({ keyOrder: [keyPrimary] });
-      return;
-    }
-    if (sortConfig2.keyOrder[0] === keyPrimary) {
-      setSortConfig2(null);
-      return;
-    }
-    const keyOrder = [keyPrimary];
-    for (const key of sortConfig2.keyOrder) {
-      if (key === keyPrimary) continue;
-      keyOrder.push(key);
-    }
-    setSortConfig2({ keyOrder });
-  };
-  const requestSort3: RequestSort = (keyPrimary: KeyType) => {
-    if (!sortConfig3) {
-      setSortConfig3({ keyOrder: [keyPrimary] });
-      return;
-    }
-    if (sortConfig3.keyOrder[0] === keyPrimary) {
-      setSortConfig3(null);
-      return;
-    }
-    const keyOrder = [keyPrimary];
-    for (const key of sortConfig3.keyOrder) {
-      if (key === keyPrimary) continue;
-      keyOrder.push(key);
-    }
-    setSortConfig3({ keyOrder });
-  };
+  const requestSort1: RequestSort = makeSort(sortConfig1, setSortConfig1);
+  const requestSort2: RequestSort = makeSort(sortConfig2, setSortConfig2);
+  const requestSort3: RequestSort = makeSort(sortConfig3, setSortConfig3);
 
   return (
     <>

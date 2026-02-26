@@ -44,7 +44,7 @@ export default function Table(props: {
     columns: ColumnData[],
     sortedRows: RowKey[]
     requestSort: RequestSort,
-    sortConfig: SortConfig | null,
+    sortConfig: SortConfig,
     darkTheme: boolean,
     chances: boolean
 }) {
