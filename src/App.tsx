@@ -4,10 +4,10 @@ import { table1Data, table2Data, table3Data } from './data';
 import { getLogo } from './components/logo';
 import Table from './components/Table';
 import type { RowData, KeyType, RowKey, ColumnData, RequestSort, SortConfig } from './components/Table';
+import playerData from './data/picks.json';
+console.log(playerData);
 
 const chances = false;
-
-}
 
 type OrderKeyType = KeyType | "rawOrder" | "gg";
 
@@ -105,13 +105,13 @@ function App() {
   const table2Rows = makeRows(table2Data);
   const table3Rows = makeRows(table3Data);
 
-  const [rows1, setRows1] = useState(table1Rows);
+  const [rows1, _setRows1] = useState(table1Rows);
   const sortedRows1 = [...rows1];
 
-  const [rows2, setRows2] = useState(table2Rows);
+  const [rows2, _setRows2] = useState(table2Rows);
   const sortedRows2 = [...rows2];
 
-  const [rows3, setRows3] = useState(table3Rows);
+  const [rows3, _setRows3] = useState(table3Rows);
   const sortedRows3 = [...rows3];
 
   // Update theme when system preference changes
@@ -186,7 +186,6 @@ function App() {
     }
     setSortConfig3({ keyOrder });
   };
-  const [count, setCount] = useState(0)
 
   return (
     <>
