@@ -15,7 +15,7 @@ type RowKeyString = Record<KeyString, string>
     & Record<"betChance3", string>
     & Record<"betChance4", string>;
 
-export type RowData = {
+export interface RowData {
     firstName: string,
     lastName: string,
     team: Team,

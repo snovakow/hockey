@@ -1,13 +1,12 @@
 import { useState, useEffect } from 'react';
 import './App.css';
-import { table1Data, table2Data, table3Data } from './data';
 import { getLogo } from './components/logo';
 import Table from './components/Table';
 import type { RowData, KeyType, RowKey, ColumnData, RequestSort, SortConfig } from './components/Table';
 import playerData from './data/picks.json';
 console.log(playerData);
 
-const chances = false;
+const chances = true;
 
 type OrderKeyType = KeyType | "rawOrder" | "gg";
 
@@ -20,9 +19,9 @@ const columns: ColumnData[] = [
   { key: "bet4", title: "Hard Rock" },
 ];
 
-const rountdTo = (num: number, places: number): number => {
+const rountdTo = (num: number, places: number): string => {
   const factor = Math.pow(10, places);
-  return Math.round(num * factor) / factor;
+  return num.toFixed(places);
 }
 
 // Poisson distribution chance of 0 goals: e^(−μ)
@@ -93,6 +92,10 @@ const sortFunction = (sortConfig: SortConfig) => {
     return 0;
   }
 }
+
+const table1Data: RowData[] = playerData.playerLists[0].players as RowData[];
+const table2Data: RowData[] = playerData.playerLists[1].players as RowData[];
+const table3Data: RowData[] = playerData.playerLists[2].players as RowData[];
 
 function App() {
   // Theme state
