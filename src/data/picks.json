@@ -8,6 +8,10 @@
             "id": 1,
             "players": [
                 {
+                    "bet1": 475,
+                    "bet2": 380,
+                    "bet3": 370,
+                    "bet4": 400,
                     "nhlPlayerId": 8471685,
                     "firstName": "Anze",
                     "lastName": "Kopitar",
@@ -36,6 +40,10 @@
                     "gameLogs": []
                 },
                 {
+                    "bet1": 330,
+                    "bet2": 275,
+                    "bet3": 300,
+                    "bet4": 260,
                     "nhlPlayerId": 8474150,
                     "firstName": "Mikael",
                     "lastName": "Backlund",
@@ -64,6 +72,10 @@
                     "gameLogs": []
                 },
                 {
+                    "bet1": 230,
+                    "bet2": 230,
+                    "bet3": 170,
+                    "bet4": 200,
                     "nhlPlayerId": 8475172,
                     "firstName": "Nazem",
                     "lastName": "Kadri",
@@ -92,6 +104,10 @@
                     "gameLogs": []
                 },
                 {
+                    "bet1": 155,
+                    "bet2": 160,
+                    "bet3": 148,
+                    "bet4": 135,
                     "nhlPlayerId": 8475786,
                     "firstName": "Zach",
                     "lastName": "Hyman",
@@ -120,6 +136,10 @@
                     "gameLogs": []
                 },
                 {
+                    "bet1": 450,
+                    "bet2": 360,
+                    "bet3": 370,
+                    "bet4": 425,
                     "nhlPlayerId": 8475848,
                     "firstName": "Brendan",
                     "lastName": "Gallagher",
@@ -148,6 +168,10 @@
                     "gameLogs": []
                 },
                 {
+                    "bet1": 135,
+                    "bet2": 135,
+                    "bet3": 123,
+                    "bet4": 115,
                     "nhlPlayerId": 8477934,
                     "firstName": "Leon",
                     "lastName": "Draisaitl",
@@ -176,6 +200,10 @@
                     "gameLogs": []
                 },
                 {
+                    "bet1": 205,
+                    "bet2": 210,
+                    "bet3": 200,
+                    "bet4": 175,
                     "nhlPlayerId": 8477939,
                     "firstName": "William",
                     "lastName": "Nylander",
@@ -204,6 +232,10 @@
                     "gameLogs": []
                 },
                 {
+                    "bet1": 190,
+                    "bet2": 175,
+                    "bet3": 150,
+                    "bet4": 170,
                     "nhlPlayerId": 8477960,
                     "firstName": "Adrian",
                     "lastName": "Kempe",
@@ -232,6 +264,10 @@
                     "gameLogs": []
                 },
                 {
+                    "bet1": 800,
+                    "bet2": 800,
+                    "bet3": 480,
+                    "bet4": 575,
                     "nhlPlayerId": 8478462,
                     "firstName": "Nicolas",
                     "lastName": "Roy",
@@ -260,6 +296,10 @@
                     "gameLogs": []
                 },
                 {
+                    "bet1": 160,
+                    "bet2": 155,
+                    "bet3": 130,
+                    "bet4": 140,
                     "nhlPlayerId": 8479318,
                     "firstName": "Auston",
                     "lastName": "Matthews",
@@ -288,6 +328,10 @@
                     "gameLogs": []
                 },
                 {
+                    "bet1": 475,
+                    "bet2": 370,
+                    "bet3": 320,
+                    "bet4": 400,
                     "nhlPlayerId": 8479675,
                     "firstName": "Trevor",
                     "lastName": "Moore",
@@ -316,6 +360,10 @@
                     "gameLogs": []
                 },
                 {
+                    "bet1": 205,
+                    "bet2": 200,
+                    "bet3": 165,
+                    "bet4": 200,
                     "nhlPlayerId": 8480018,
                     "firstName": "Nicholas",
                     "lastName": "Suzuki",
@@ -344,6 +392,10 @@
                     "gameLogs": []
                 },
                 {
+                    "bet1": 700,
+                    "bet2": 700,
+                    "bet3": 370,
+                    "bet4": 500,
                     "nhlPlayerId": 8480188,
                     "firstName": "Fabian",
                     "lastName": "Zetterlund",
@@ -372,6 +424,10 @@
                     "gameLogs": []
                 },
                 {
+                    "bet1": 295,
+                    "bet2": 290,
+                    "bet3": 250,
+                    "bet4": 225,
                     "nhlPlayerId": 8482078,
                     "firstName": "Lucas",
                     "lastName": "Raymond",
@@ -400,6 +456,10 @@
                     "gameLogs": []
                 },
                 {
+                    "bet1": 190,
+                    "bet2": 200,
+                    "bet3": 175,
+                    "bet4": 150,
                     "nhlPlayerId": 8482116,
                     "firstName": "Tim",
                     "lastName": "Stützle",
@@ -433,6 +493,10 @@
             "id": 2,
             "players": [
                 {
+                    "bet1": 450,
+                    "bet2": 340,
+                    "bet3": 295,
+                    "bet4": 350,
                     "nhlPlayerId": 8473512,
                     "firstName": "Claude",
                     "lastName": "Giroux",
@@ -461,6 +525,10 @@
                     "gameLogs": []
                 },
                 {
+                    "bet1": 1200,
+                    "bet2": 1300,
+                    "bet3": 700,
+                    "bet4": 850,
                     "nhlPlayerId": 8475218,
                     "firstName": "Mattias",
                     "lastName": "Ekholm",
@@ -489,6 +557,10 @@
                     "gameLogs": []
                 },
                 {
+                    "bet1": 425,
+                    "bet2": 410,
+                    "bet3": 0,
+                    "bet4": 400,
                     "nhlPlayerId": 8476292,
                     "firstName": "Ondrej",
                     "lastName": "Palat",
@@ -517,6 +589,10 @@
                     "gameLogs": []
                 },
                 {
+                    "bet1": 500,
+                    "bet2": 575,
+                    "bet3": 400,
+                    "bet4": 475,
                     "nhlPlayerId": 8476479,
                     "firstName": "Phillip",
                     "lastName": "Danault",
@@ -545,6 +621,10 @@
                     "gameLogs": []
                 },
                 {
+                    "bet1": 425,
+                    "bet2": 420,
+                    "bet3": 350,
+                    "bet4": 400,
                     "nhlPlayerId": 8477444,
                     "firstName": "Andre",
                     "lastName": "Burakovsky",
@@ -573,6 +653,10 @@
                     "gameLogs": []
                 },
                 {
+                    "bet1": 245,
+                    "bet2": 240,
+                    "bet3": 210,
+                    "bet4": 240,
                     "nhlPlayerId": 8477476,
                     "firstName": "Artturi",
                     "lastName": "Lehkonen",
@@ -601,6 +685,10 @@
                     "gameLogs": []
                 },
                 {
+                    "bet1": 425,
+                    "bet2": 420,
+                    "bet3": 350,
+                    "bet4": 300,
                     "nhlPlayerId": 8477503,
                     "firstName": "Max",
                     "lastName": "Domi",
@@ -629,6 +717,10 @@
                     "gameLogs": []
                 },
                 {
+                    "bet1": 900,
+                    "bet2": 750,
+                    "bet3": 410,
+                    "bet4": 750,
                     "nhlPlayerId": 8478233,
                     "firstName": "Andrew",
                     "lastName": "Mangiapane",
@@ -657,6 +749,10 @@
                     "gameLogs": []
                 },
                 {
+                    "bet1": 425,
+                    "bet2": 380,
+                    "bet3": 350,
+                    "bet4": 350,
                     "nhlPlayerId": 8480028,
                     "firstName": "Morgan",
                     "lastName": "Frost",
@@ -685,6 +781,10 @@
                     "gameLogs": []
                 },
                 {
+                    "bet1": 0,
+                    "bet2": 0,
+                    "bet3": 0,
+                    "bet4": 0,
                     "nhlPlayerId": 8480813,
                     "firstName": "Joe",
                     "lastName": "Veleno",
@@ -713,6 +813,10 @@
                     "gameLogs": []
                 },
                 {
+                    "bet1": 600,
+                    "bet2": 550,
+                    "bet3": 0,
+                    "bet4": 475,
                     "nhlPlayerId": 8481532,
                     "firstName": "Alex",
                     "lastName": "Turcotte",
@@ -741,6 +845,10 @@
                     "gameLogs": []
                 },
                 {
+                    "bet1": 390,
+                    "bet2": 330,
+                    "bet3": 375,
+                    "bet4": 350,
                     "nhlPlayerId": 8482074,
                     "firstName": "Connor",
                     "lastName": "Zary",
@@ -769,6 +877,10 @@
                     "gameLogs": []
                 },
                 {
+                    "bet1": 450,
+                    "bet2": 480,
+                    "bet3": 275,
+                    "bet4": 375,
                     "nhlPlayerId": 8482092,
                     "firstName": "Ridly",
                     "lastName": "Greig",
@@ -797,6 +909,10 @@
                     "gameLogs": []
                 },
                 {
+                    "bet1": 360,
+                    "bet2": 340,
+                    "bet3": 330,
+                    "bet4": 275,
                     "nhlPlayerId": 8482259,
                     "firstName": "Bobby",
                     "lastName": "McMann",
@@ -825,6 +941,10 @@
                     "gameLogs": []
                 },
                 {
+                    "bet1": 350,
+                    "bet2": 320,
+                    "bet3": 235,
+                    "bet4": 275,
                     "nhlPlayerId": 8482720,
                     "firstName": "Matthew",
                     "lastName": "Knies",
@@ -858,6 +978,10 @@
             "id": 3,
             "players": [
                 {
+                    "bet1": 950,
+                    "bet2": 900,
+                    "bet3": 950,
+                    "bet4": 800,
                     "nhlPlayerId": 8475171,
                     "firstName": "Oliver",
                     "lastName": "Ekman-Larsson",
@@ -886,6 +1010,10 @@
                     "gameLogs": []
                 },
                 {
+                    "bet1": 550,
+                    "bet2": 650,
+                    "bet3": 440,
+                    "bet4": 475,
                     "nhlPlayerId": 8476393,
                     "firstName": "Nick",
                     "lastName": "Cousins",
@@ -914,6 +1042,10 @@
                     "gameLogs": []
                 },
                 {
+                    "bet1": 500,
+                    "bet2": 0,
+                    "bet3": 525,
+                    "bet4": 0,
                     "nhlPlayerId": 8477380,
                     "firstName": "Jonny",
                     "lastName": "Brodzinski",
@@ -942,6 +1074,10 @@
                     "gameLogs": []
                 },
                 {
+                    "bet1": 800,
+                    "bet2": 850,
+                    "bet3": 540,
+                    "bet4": 600,
                     "nhlPlayerId": 8478133,
                     "firstName": "Jake",
                     "lastName": "Evans",
@@ -970,6 +1106,10 @@
                     "gameLogs": []
                 },
                 {
+                    "bet1": 2000,
+                    "bet2": 2100,
+                    "bet3": 1400,
+                    "bet4": 1300,
                     "nhlPlayerId": 8478443,
                     "firstName": "Brandon",
                     "lastName": "Carlo",
@@ -998,6 +1138,10 @@
                     "gameLogs": []
                 },
                 {
+                    "bet1": 950,
+                    "bet2": 1100,
+                    "bet3": 750,
+                    "bet4": 750,
                     "nhlPlayerId": 8479066,
                     "firstName": "Ryan",
                     "lastName": "Lomberg",
@@ -1026,6 +1170,10 @@
                     "gameLogs": []
                 },
                 {
+                    "bet1": 1000,
+                    "bet2": 900,
+                    "bet3": 450,
+                    "bet4": 750,
                     "nhlPlayerId": 8479365,
                     "firstName": "Trent",
                     "lastName": "Frederic",
@@ -1054,6 +1202,10 @@
                     "gameLogs": []
                 },
                 {
+                    "bet1": 425,
+                    "bet2": 400,
+                    "bet3": 375,
+                    "bet4": 400,
                     "nhlPlayerId": 8480220,
                     "firstName": "Noah",
                     "lastName": "Cates",
@@ -1082,6 +1234,10 @@
                     "gameLogs": []
                 },
                 {
+                    "bet1": 1400,
+                    "bet2": 1700,
+                    "bet3": 1300,
+                    "bet4": 1000,
                     "nhlPlayerId": 8480727,
                     "firstName": "Zach",
                     "lastName": "Whitecloud",
@@ -1110,6 +1266,10 @@
                     "gameLogs": []
                 },
                 {
+                    "bet1": 2200,
+                    "bet2": 2100,
+                    "bet3": 1600,
+                    "bet4": 1750,
                     "nhlPlayerId": 8480834,
                     "firstName": "Ty",
                     "lastName": "Emberson",
@@ -1138,6 +1298,10 @@
                     "gameLogs": []
                 },
                 {
+                    "bet1": 2200,
+                    "bet2": 2700,
+                    "bet3": 1800,
+                    "bet4": 1750,
                     "nhlPlayerId": 8481122,
                     "firstName": "Simon",
                     "lastName": "Benoit",
@@ -1166,6 +1330,10 @@
                     "gameLogs": []
                 },
                 {
+                    "bet1": 1100,
+                    "bet2": 1100,
+                    "bet3": 1000,
+                    "bet4": 1100,
                     "nhlPlayerId": 8482087,
                     "firstName": "Kaiden",
                     "lastName": "Guhle",
@@ -1194,6 +1362,10 @@
                     "gameLogs": []
                 },
                 {
+                    "bet1": 1200,
+                    "bet2": 1300,
+                    "bet3": 1200,
+                    "bet4": 1100,
                     "nhlPlayerId": 8482245,
                     "firstName": "Artem",
                     "lastName": "Zub",
@@ -1222,6 +1394,10 @@
                     "gameLogs": []
                 },
                 {
+                    "bet1": 1500,
+                    "bet2": 1400,
+                    "bet3": 1150,
+                    "bet4": 1100,
                     "nhlPlayerId": 8482482,
                     "firstName": "Adam",
                     "lastName": "Wilsby",
@@ -1250,6 +1426,10 @@
                     "gameLogs": []
                 },
                 {
+                    "bet1": 360,
+                    "bet2": 340,
+                    "bet3": 310,
+                    "bet4": 325,
                     "nhlPlayerId": 8482702,
                     "firstName": "Logan",
                     "lastName": "Stankoven",
