@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react'
-import './App.css'
+import { useState, useEffect } from 'react';
+import './App.css';
 import { table1Data, table2Data, table3Data } from './data';
 import { getLogo } from './components/logo';
-import Table from './components/Table'
+import Table from './components/Table';
 import type { RowData, KeyType, RowKey, ColumnData, RequestSort, SortConfig } from './components/Table';
 
+const chances = false;
 
 }
 
@@ -45,7 +46,7 @@ const betChance = (x: number): string => {
   return rountdTo(chance * 100, 2) + "%";
 }
 
-const makeRows = (data: RowData[], isDark: boolean): RowKey[] => {
+const makeRows = (data: RowData[]): RowKey[] => {
   return data.map((item: RowData, index: number): RowKey => {
     return {
       rawOrder: index,
@@ -99,9 +100,9 @@ function App() {
   });
 
   // Table data and sorting - regenerate when theme changes
-  const table1Rows = makeRows(table1Data, darkTheme);
-  const table2Rows = makeRows(table2Data, darkTheme);
-  const table3Rows = makeRows(table3Data, darkTheme);
+  const table1Rows = makeRows(table1Data);
+  const table2Rows = makeRows(table2Data);
+  const table3Rows = makeRows(table3Data);
 
   const [rows1, setRows1] = useState(table1Rows);
   const sortedRows1 = [...rows1];
@@ -186,7 +187,6 @@ function App() {
   };
   const [count, setCount] = useState(0)
 
-  const chances = true;
   return (
     <>
       <header className='header satisfy-regular'>
