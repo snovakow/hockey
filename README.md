@@ -3,6 +3,11 @@
 
 [odds](https://www.rotowire.com/betting/nhl/player-props.php)
 
+[DraftKings](https://sportsbook.draftkings.com/leagues/hockey/nhl?category=goalscorer&subcategory=anytime-goalscorer)
+[FanDuel](https://on.sportsbook.fanduel.ca/navigation/nhl?tab=parlay-builder)
+[BetRivers](https://on.betrivers.ca/?page=sportsbook&group=1000093657&type=playerprops)
+[Hard Rock](https://www.hardrock.bet)
+
 Reacts adaptively to light-dark scheme
 
 # React + TypeScript + Vite
