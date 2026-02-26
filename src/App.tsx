@@ -3,14 +3,12 @@ import './App.css'
 import { table1Data, table2Data, table3Data } from './data';
 import { getLogo } from './components/logo';
 import Table from './components/Table'
-import type { RowData, KeyType, RowKey } from './components/Table';
+import type { RowData, KeyType, RowKey, ColumnData, RequestSort, SortConfig } from './components/Table';
 
-type OrderKeyType = KeyType | "rawOrder";
 
-interface ColumnData {
-  key: KeyType;
-  title: string;
 }
+
+type OrderKeyType = KeyType | "rawOrder" | "gg";
 
 const columns: ColumnData[] = [
   { key: "name", title: "Player" },
@@ -63,10 +61,6 @@ const makeRows = (data: RowData[], isDark: boolean): RowKey[] => {
       betChance4: betChance(item.bet4),
     }
   });
-}
-
-interface SortConfig {
-  keyOrder: KeyType[];
 }
 
 const sortFunction = (sortConfig: SortConfig) => {
@@ -131,7 +125,7 @@ function App() {
     sortedRows3.sort(sortFunction(sortConfig3));
   }
 
-  const requestSort1 = (keyPrimary: KeyType) => {
+  const requestSort1: RequestSort = (keyPrimary: KeyType) => {
     if (!sortConfig1) {
       setSortConfig1({ keyOrder: [keyPrimary] });
       return;
@@ -147,7 +141,7 @@ function App() {
     }
     setSortConfig1({ keyOrder });
   };
-  const requestSort2 = (keyPrimary: KeyType) => {
+  const requestSort2: RequestSort = (keyPrimary: KeyType) => {
     if (!sortConfig2) {
       setSortConfig2({ keyOrder: [keyPrimary] });
       return;
@@ -163,7 +157,7 @@ function App() {
     }
     setSortConfig2({ keyOrder });
   };
-  const requestSort3 = (keyPrimary: KeyType) => {
+  const requestSort3: RequestSort = (keyPrimary: KeyType) => {
     if (!sortConfig3) {
       setSortConfig3({ keyOrder: [keyPrimary] });
       return;

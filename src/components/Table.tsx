@@ -1,13 +1,11 @@
 import type { Team } from "./logo";
 
-type DataString = "firstName" | "lastName";
-type RowDataString = Record<DataString, string>;
-
-type KeyNumber = "gg" | "bet1" | "bet2" | "bet3" | "bet4";
+type KeyNumber = "bet1" | "bet2" | "bet3" | "bet4";
 type RowKeyNumber = Record<KeyNumber, number>;
 
 type KeyString = "name";
 type RowKeyString = Record<KeyString, string>
+    & Record<"gg", number>
     & Record<"logoLight", string>
     & Record<"logoDark", string>
     & Record<"rawOrder", number>
@@ -18,14 +16,25 @@ type RowKeyString = Record<KeyString, string>
     & Record<"betChance4", string>;
 
 export type RowData = RowDataString & RowKeyNumber & { team: Team };
-export type KeyType = KeyString | KeyNumber;
-export type RowKey = RowKeyString & RowKeyNumber;
+export type KeyType = KeyString | KeyNumber | "gg";
+export type RowKey = RowKeyString & RowKeyNumber & { gg: number };
+
+export interface ColumnData {
+    key: KeyType;
+    title: string;
+}
+
+export type RequestSort = (key: KeyType) => void;
+
+export interface SortConfig {
+    keyOrder: KeyType[];
+}
 
 export default function Table(props: {
-    columns: { key: KeyType; title: string }[],
+    columns: ColumnData[],
     sortedRows: RowKey[]
-    requestSort: (key: KeyType) => void,
-    sortConfig: { keyOrder: KeyType[] } | null,
+    requestSort: RequestSort,
+    sortConfig: SortConfig | null,
     darkTheme: boolean,
     chances: boolean
 }) {
