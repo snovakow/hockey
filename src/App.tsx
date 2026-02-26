@@ -14,10 +14,10 @@ type OrderKeyType = KeyType | "rawOrder" | "gg";
 const columns: ColumnData[] = [
   { key: "name", title: "Player" },
   { key: "gg", title: "GG" },
-  { key: "bet1", title: "Bet1" },
-  { key: "bet2", title: "Bet2" },
-  { key: "bet3", title: "Bet3" },
-  { key: "bet4", title: "Bet4" },
+  { key: "bet1", title: "DraftKings" },
+  { key: "bet2", title: "FanDuel" },
+  { key: "bet3", title: "BetRivers" },
+  { key: "bet4", title: "Hard Rock" },
 ];
 
 const rountdTo = (num: number, places: number): number => {
