@@ -1,6 +1,4 @@
-import type { Team } from "./logo";
-
-type KeyNumber = "bet1" | "bet2" | "bet3" | "bet4";
+type KeyNumber = "bet1" | "bet2" | "bet3";
 type RowKeyNumber = Record<KeyNumber, number>;
 
 type KeyString = "name";
@@ -12,19 +10,7 @@ type RowKeyString = Record<KeyString, string>
     & Record<"betChance1", string>
     & Record<"betChance2", string>
     & Record<"betChance3", string>
-    & Record<"betChance4", string>;
 
-export interface RowData {
-    firstName: string,
-    lastName: string,
-    team: Team,
-    goals: number,
-    gamesPlayed: number,
-    bet1: number,
-    bet2: number,
-    bet3: number,
-    bet4: number
-};
 export type KeyType = KeyString | KeyNumber | "gg";
 export type RowKey = RowKeyString & RowKeyNumber & { gg: number };
 
@@ -79,7 +65,6 @@ export default function Table(props: {
                         <td>{chances ? row.betChance1 : (row.bet1 || "-")}</td>
                         <td>{chances ? row.betChance2 : (row.bet2 || "-")}</td>
                         <td>{chances ? row.betChance3 : (row.bet3 || "-")}</td>
-                        <td>{chances ? row.betChance4 : (row.bet4 || "-")}</td>
                     </tr>
                 ))}
             </tbody>

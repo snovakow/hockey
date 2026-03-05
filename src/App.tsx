@@ -1,35 +1,81 @@
 import { useState, useEffect } from 'react';
 import './App.css';
-import { getLogo } from './components/logo';
+import { getLogo, type Team } from './components/logo';
 import Table from './components/Table';
-import type { RowData, KeyType, RowKey, ColumnData, RequestSort, SortConfig } from './components/Table';
+import type { KeyType, RowKey, ColumnData, RequestSort, SortConfig } from './components/Table';
 import type { DataDraftKings, DataTimsHelper } from './data/Data';
 import playerData from './data/helper.json';
-import playerOdds from './data/fanduel.json';
+import playerOddsDraftKings from './data/draftkings.json';
+import playerOddsFanDuel from './data/fanduel.json';
+import playerOddsBetRivers from './data/betrivers.json';
 
+const directLoad = true;
 
+const nameMap = new Map<string, string>();
+nameMap.set("Freddy Gaudreau", "Frederick Gaudreau");
+nameMap.set("Joshua Norris", "Josh Norris");
 
-async function loadAndParseJSON(url: string, complete: (data: any) => void) {
+nameMap.set("Alex Kerfoot", "Alexander Kerfoot"); // DraftKings, FanDuel, BetRivers Unknown
+nameMap.set("Alexei Toropchenko", "Alexey Toropchenko"); // Alexey in DraftKings and FanDuel
+nameMap.set("Jake Middleton", "Jacob Middleton"); // Unknown
+nameMap.set("Martin Fehérváry", "Martin Fehervary"); // Unknown
+nameMap.set("Nicholas Suzuki", "Nick Suzuki"); // Unknown
+nameMap.set("Sebastian Aho", "Sebastian Aho (CAR)"); // BetRivers and FanDuel
+
+const nameMap1 = new Map<string, string>(nameMap);
+const nameMap2 = new Map<string, string>(nameMap);
+const nameMap3 = new Map<string, string>(nameMap);
+
+nameMap1.set("Tim Stützle", "Tim Stuetzle");
+
+nameMap2.set("Elias Pettersson", "Elias Pettersson #40");
+
+nameMap3.set("Artem Zub", "Artyom Zub");
+nameMap3.set("Elias Pettersson", "Elias Pettersson (1998)");
+nameMap3.set("J.J. Moser", "Janis Jérôme Moser");
+
+async function loadAndParseXML(url: string, complete: (data: RowKey[]) => void) {
   try {
+    // 1. Fetch the external XML file
     const response = await fetch(url);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    const json = await response.json();
-    complete(json);
+    // 2. Get the response body as plain text
+    const xmlText = await response.text();
+
+    // Fix images lacking a closing slash (e.g., <img src="..."> to <img src="..." />)
+    const renamedString = xmlText;//.replace(/<img (.*?)>/g, "<img $1 />");
+
+    // 3. Parse the XML string into an XML DOM object
+    const parser = new DOMParser();
+    const xmlDoc = parser.parseFromString(renamedString, "text/html");
+
+    const players = xmlDoc.getElementsByClassName("webix_ss_left")[0];
+    const children = players.children[0].children[0].children;
+    const cell = children[0].children[0].childNodes;
+    const name = `${cell[2].textContent?.trimEnd()}${cell[3].textContent}`;
+    console.log(`<${name}>`);
+
+    const bets = xmlDoc.getElementsByClassName("webix_ss_center")[0];
+    console.log(bets);
+
+    // complete([]);
   } catch (error) {
-    console.error("Error loading or parsing JSON:", error);
+    console.error("Error loading or parsing XML:", error);
   }
 }
+// loadAndParseXML("./odds_DraftKings.xml", (data: RowKey[]) => {
+//   console.log(data);
+// });
 
 const columns: ColumnData[] = [
   { key: "name", title: "Player" },
-  { key: "gg", title: "GG" },
+  { key: "gg", title: "G/GP" },
   { key: "bet1", title: "DraftKings" },
   { key: "bet2", title: "FanDuel" },
   { key: "bet3", title: "BetRivers" },
-  { key: "bet4", title: "Hard Rock" },
 ];
 
 const rountdToPercent = (num: number, places: number): string => {
@@ -45,7 +91,7 @@ const ggChance = (x: number): string => {
 
 // Implied Odds
 const betChance = (x: number): number => {
-  if (x === undefined) return 0;
+  if (x === 0) return 0;
   if (x < 0) return -x / (100 - x);
   else return 100 / (x + 100);
 }
@@ -64,23 +110,21 @@ const trueOddsToAmerican = (x: number): number => {
   }
 }
 
-const makeRows = (data: RowData[]): RowKey[] => {
-  return data.map((item: RowData): RowKey => {
+const makeRows = (data: DataTimsHelper[]): RowKey[] => {
+  return data.map((item: DataTimsHelper): RowKey => {
     const gg = item.goals / item.gamesPlayed;
     return {
       name: `${item.firstName} ${item.lastName}`,
-      logoLight: getLogo(item.team, false),
-      logoDark: getLogo(item.team, true),
+      logoLight: getLogo(item.team as Team, false),
+      logoDark: getLogo(item.team as Team, true),
       gg: gg,
       ggChance: ggChance(gg),
-      bet1: item.bet1,
-      betChance1: betChanceRounded(item.bet1),
-      bet2: item.bet2,
-      betChance2: betChanceRounded(item.bet2),
-      bet3: item.bet3,
-      betChance3: betChanceRounded(item.bet3),
-      bet4: item.bet4,
-      betChance4: betChanceRounded(item.bet4),
+      bet1: 0,
+      betChance1: "-",
+      bet2: 0,
+      betChance2: "-",
+      bet3: 0,
+      betChance3: "-",
     }
   });
 }
@@ -91,13 +135,13 @@ const sortFunction = (sortConfig: SortConfig) => {
       const aVal = a[key];
       const bVal = b[key];
 
-      if (aVal === undefined) {
-        if (bVal === undefined) continue;
-        return 1;
-      }
-      if (bVal === undefined) return -1;
-
       if (typeof aVal === 'number' && typeof bVal === 'number') {
+        if (aVal === 0) {
+          if (bVal === 0) continue;
+          return 1;
+        }
+        if (bVal === 0) return -1;
+
         if (aVal !== bVal) {
           if (key === 'gg') return bVal - aVal;
           else return aVal - bVal;
@@ -133,39 +177,29 @@ const table1Rows = makeRows(table1Data);
 const table2Rows = makeRows(table2Data);
 const table3Rows = makeRows(table3Data);
 
-const nameMapDraftKings = new Map<string, string>();
-nameMapDraftKings.set("Alex Kerfoot", "Alexander Kerfoot");
-nameMapDraftKings.set("Joshua Norris", "Josh Norris");
-nameMapDraftKings.set("Jake Middleton", "Jacob Middleton");
-nameMapDraftKings.set("Martin Fehérváry", "Martin Fehervary");
-nameMapDraftKings.set("Cam York", "Cameron York");
-nameMapDraftKings.set("Freddy Gaudreau", "Frederick Gaudreau");
-nameMapDraftKings.set("Elias Pettersson", "Elias Pettersson (F)");
-
-const betOddsFromMap = (row: RowKey, map: Map<string, number>): number | undefined => {
+const betOddsFromMap = (row: RowKey, map: Map<string, number>, buMap: Map<string, string>): number | undefined => {
   const trueOdds = map.get(row.name);
   if (trueOdds === undefined) {
-    const name = nameMapDraftKings.get(row.name);
+    const name = buMap.get(row.name);
     if (name !== undefined) return map.get(name);
   }
   return trueOdds;
 }
-type betKeys = "bet1" | "bet2" | "bet3" | "bet4";
-type betChanceKey = "betChance1" | "betChance2" | "betChance3" | "betChance4";
+type betKeys = "bet1" | "bet2" | "bet3";
+type betChanceKey = "betChance1" | "betChance2" | "betChance3";
 const assignOdds = (row: RowKey, trueOdds: number, betKey: betKeys, betChanceKey: betChanceKey): void => {
   const odds = trueOddsToAmerican(trueOdds);
   row[betKey] = odds;
   row[betChanceKey] = betChanceRounded(odds);
 }
 
-const url = "https://sportsbook-nash.draftkings.com/sites/CA-ON-SB/api/sportscontent/controldata/league/leagueSubcategory/v1/markets?isBatchable=false&templateVars=42133%2C13809&eventsQuery=%24filter%3DleagueId%20eq%20%2742133%27%20AND%20clientMetadata%2FSubcategories%2Fany%28s%3A%20s%2FId%20eq%20%2713809%27%29&marketsQuery=%24filter%3DclientMetadata%2FsubCategoryId%20eq%20%2713809%27%20AND%20tags%2Fall%28t%3A%20t%20ne%20%27SportcastBetBuilder%27%29&include=Events&entity=events";
-loadAndParseJSON(url, (json: any) => {
+const processJSON = (json: any) => {
   const data: DataDraftKings[] = json.selections;
   const map = new Map<string, number>();
 
   // const arr = [];
   for (const selection of data) {
-    const label = selection.label;
+    const label = selection.participants[0].seoIdentifier;
     const trueOdds = selection.trueOdds;
 
     // const participant = selection.participants[0];
@@ -179,33 +213,56 @@ loadAndParseJSON(url, (json: any) => {
 
   const err: string[] = [];
   for (const row of table1Rows) {
-    const odds = betOddsFromMap(row, map);
+    const odds = betOddsFromMap(row, map, nameMap1);
     if (odds === undefined) err.push(row.name);
     else assignOdds(row, odds, "bet1", "betChance1");
   }
   for (const row of table2Rows) {
-    const odds = betOddsFromMap(row, map);
+    const odds = betOddsFromMap(row, map, nameMap1);
     if (odds === undefined) err.push(row.name);
     else assignOdds(row, odds, "bet1", "betChance1");
   }
   for (const row of table3Rows) {
-    const odds = betOddsFromMap(row, map);
+    const odds = betOddsFromMap(row, map, nameMap1);
     if (odds === undefined) err.push(row.name);
     else assignOdds(row, odds, "bet1", "betChance1");
   }
   console.log("DraftKings", err);
+}
+async function loadAndParseJSON(url: string, complete: (data: any) => void, init?: RequestInit) {
+  try {
+    const response = await fetch(url, init);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
 
-  const myCustomEvent = new Event("DraftKings", {
-    bubbles: false,
-    cancelable: true,
+    const json = await response.json();
+    complete(json);
+  } catch (error) {
+    console.error("Error loading or parsing JSON:", error);
+  }
+}
+// 2026 2 4 2200
+// const d = new Date(Date.UTC(2026, 2, 4, 22, 0));
+// console.log(d.toLocaleString());
+if (directLoad) {
+  processJSON(playerOddsDraftKings);
+} else {
+  const url = "https://sportsbook-nash.draftkings.com/sites/CA-ON-SB/api/sportscontent/controldata/league/leagueSubcategory/v1/markets?isBatchable=false&templateVars=42133%2C13809&eventsQuery=%24filter%3DleagueId%20eq%20%2742133%27%20AND%20clientMetadata%2FSubcategories%2Fany%28s%3A%20s%2FId%20eq%20%2713809%27%29&marketsQuery=%24filter%3DclientMetadata%2FsubCategoryId%20eq%20%2713809%27%20AND%20tags%2Fall%28t%3A%20t%20ne%20%27SportcastBetBuilder%27%29&include=Events&entity=events";
+  loadAndParseJSON(url, (json: any) => {
+    processJSON(json);
+    const myCustomEvent = new Event("DraftKings", {
+      bubbles: false,
+      cancelable: true,
+    });
+    window.dispatchEvent(myCustomEvent);
   });
-  window.dispatchEvent(myCustomEvent);
-});
+}
 
-const processOdds = () => {
+const processOddsFanDuel = () => {
   const map = new Map<string, number>();
 
-  for (const market of Object.values(playerOdds.attachments.markets)) {
+  for (const market of Object.values(playerOddsFanDuel.attachments.markets)) {
     if (market.marketType !== 'ANY_TIME_GOAL_SCORER') continue;
     for (const runner of market.runners) {
       const num = runner.winRunnerOdds.trueOdds.fractionalOdds.numerator;
@@ -217,23 +274,139 @@ const processOdds = () => {
 
   const err: string[] = [];
   for (const row of table1Rows) {
-    const odds = betOddsFromMap(row, map);
+    const odds = betOddsFromMap(row, map, nameMap2);
     if (odds === undefined) err.push(row.name);
     else assignOdds(row, odds, "bet2", "betChance2");
   }
   for (const row of table2Rows) {
-    const odds = betOddsFromMap(row, map);
+    const odds = betOddsFromMap(row, map, nameMap2);
     if (odds === undefined) err.push(row.name);
     else assignOdds(row, odds, "bet2", "betChance2");
   }
   for (const row of table3Rows) {
-    const odds = betOddsFromMap(row, map);
+    const odds = betOddsFromMap(row, map, nameMap2);
     if (odds === undefined) err.push(row.name);
     else assignOdds(row, odds, "bet2", "betChance2");
   }
   console.log("FanDuel", err);
 }
-processOdds();
+processOddsFanDuel();
+
+const processOddsBetRivers = () => {
+  const map = new Map<string, number>();
+  for (const item of playerOddsBetRivers) {
+    const outcome = item.outcomes[0];
+    const fraction = outcome.oddsFractional.split("/");
+    const num = Number(fraction[0]);
+    const den = Number(fraction[1]);
+    // outcome.odds outcome.oddsAmerican outcome.oddsFractional
+    const trueOdds = num / den + 1;
+    map.set(item.playerInfo.name, trueOdds);
+  }
+
+  const err: string[] = [];
+  for (const row of table1Rows) {
+    const odds = betOddsFromMap(row, map, nameMap3);
+    if (odds === undefined) err.push(row.name);
+    else assignOdds(row, odds, "bet3", "betChance3");
+  }
+  for (const row of table2Rows) {
+    const odds = betOddsFromMap(row, map, nameMap3);
+    if (odds === undefined) err.push(row.name);
+    else assignOdds(row, odds, "bet3", "betChance3");
+  }
+  for (const row of table3Rows) {
+    const odds = betOddsFromMap(row, map, nameMap3);
+    if (odds === undefined) err.push(row.name);
+    else assignOdds(row, odds, "bet3", "betChance3");
+  }
+  console.log("BetRivers", err);
+}
+processOddsBetRivers();
+
+const logStats = () => {
+  const processRow = (key: 'bet1' | 'bet2' | 'bet3', rows: RowKey[]): RowKey[] | null => {
+    let max = null;
+    for (const row of rows) {
+      const val = row[key];
+      if (val === 0) continue;
+      if (!max) {
+        max = [row];
+        continue;
+      }
+      const maxrow = max[0];
+      const maxval = maxrow[key];
+      if (val > maxval) continue;
+      if (val < maxval) max = [row];
+      else max.push(row);
+    }
+    return max;
+  };
+
+  let max1arow = null;
+  let max2arow = null;
+  let max3arow = null;
+  let max1brow = null;
+  let max2brow = null;
+  let max3brow = null;
+  let max1crow = null;
+  let max2crow = null;
+  let max3crow = null;
+  max1arow = processRow('bet1', table1Rows);
+  max1brow = processRow('bet2', table1Rows);
+  max1crow = processRow('bet3', table1Rows);
+  max2arow = processRow('bet1', table2Rows);
+  max2brow = processRow('bet2', table2Rows);
+  max2crow = processRow('bet3', table2Rows);
+  max3arow = processRow('bet1', table3Rows);
+  max3brow = processRow('bet2', table3Rows);
+  max3crow = processRow('bet3', table3Rows);
+  if (!max1arow || !max1brow || !max1crow) return;
+  if (!max2arow || !max2brow || !max2crow) return;
+  if (!max3arow || !max3brow || !max3crow) return;
+  const max1a = betChance(max1arow[0].bet1);
+  const max2a = betChance(max2arow[0].bet1);
+  const max3a = betChance(max3arow[0].bet1);
+  const max1b = betChance(max1brow[0].bet2);
+  const max2b = betChance(max2brow[0].bet2);
+  const max3b = betChance(max3brow[0].bet2);
+  const max1c = betChance(max1crow[0].bet3);
+  const max2c = betChance(max2crow[0].bet3);
+  const max3c = betChance(max3crow[0].bet3);
+  console.log("Any (70-74) 79.1:   ",
+    "DraftKings: " + rountdToPercent(1 - (1 - max1a) * (1 - max2a) * (1 - max3a), 3),
+    "FanDuel: " + rountdToPercent(1 - (1 - max1b) * (1 - max2b) * (1 - max3b), 3),
+    "BetRivers: " + rountdToPercent(1 - (1 - max1c) * (1 - max2c) * (1 - max3c), 3),
+  );
+  console.log("Avg (33-36) 38-39.7:",
+    "DraftKings: " + rountdToPercent((max1a + max2a + max3a) / 3, 3),
+    "FanDuel: " + rountdToPercent((max1b + max2b + max3b) / 3, 3),
+    "BetRivers: " + rountdToPercent((max1c + max2c + max3c) / 3, 3),
+  );
+  console.log("All (3-4) 5.5:      ",
+    "DraftKings:  " + rountdToPercent(max1a * max2a * max3a, 3),
+    "FanDuel:  " + rountdToPercent(max1b * max2b * max3b, 3),
+    "BetRivers:  " + rountdToPercent(max1c * max2c * max3c, 3),
+  );
+
+  const printRow = (header: string, maxarow: RowKey[], maxbrow: RowKey[], maxcrow: RowKey[]) => {
+    if (maxarow.length === 1 && maxbrow.length === 1 && maxcrow.length === 1 &&
+      maxarow[0].name === maxbrow[0].name && maxbrow[0].name === maxcrow[0].name) {
+      console.log(`${header}: ${maxarow[0].name}`);
+    } else {
+      console.log(`${header}: DraftKings: ${maxarow.map((row) => row.name).join(", ")}`);
+      console.log(`${header}: FanDuel: ${maxbrow.map((row) => row.name).join(", ")}`);
+      console.log(`${header}: BetRivers: ${maxcrow.map((row) => row.name).join(", ")}`);
+    }
+  }
+  printRow("1", max1arow, max1brow, max1crow);
+  printRow("2", max2arow, max2brow, max2crow);
+  printRow("3", max3arow, max3brow, max3crow);
+}
+
+if (directLoad) {
+  logStats();
+}
 
 function App() {
 
@@ -257,48 +430,20 @@ function App() {
   const [rows3, setRows3] = useState(table3Rows);
   const sortedRows3 = [...rows3];
 
-  useEffect(() => {
-    const handleChange = (event: Event) => {
+  if (!directLoad) {
+    useEffect(() => {
+      const handleChange = () => {
 
-      setRows1([...table1Rows]);
-      setRows2([...table2Rows]);
-      setRows3([...table3Rows]);
+        setRows1([...table1Rows]);
+        setRows2([...table2Rows]);
+        setRows3([...table3Rows]);
 
-      let max1row = null;
-      let max2row = null;
-      let max3row = null;
-      for (const row of table1Rows) {
-        if (row.bet1 === undefined) continue;
-        if (!max1row) max1row = row;
-        else if (row.bet1 < max1row.bet1) max1row = row;
-      }
-      for (const row of table2Rows) {
-        if (row.bet1 === undefined) continue;
-        if (!max2row) max2row = row;
-        else if (row.bet1 < max2row.bet1) max2row = row;
-      }
-      for (const row of table3Rows) {
-        if (row.bet1 === undefined) continue;
-        if (!max3row) max3row = row;
-        else if (row.bet1 < max3row.bet1) max3row = row;
-      }
-      if (!max1row || !max2row || !max3row) return;
-      const max1 = betChance(max1row.bet1);
-      const max2 = betChance(max2row.bet1);
-      const max3 = betChance(max3row.bet1);
-      const winningChance = 1 - (1 - max1) * (1 - max2) * (1 - max3);
-      console.log("Any (70-74):", rountdToPercent(winningChance, 3));
-      console.log("Avg (33-38):", rountdToPercent((max1 + max2 + max3) / 3, 3));
-      console.log("All (03-04):", rountdToPercent(max1 * max2 * max3, 3));
-      console.log("Two (21-22):", rountdToPercent(max1 * max2 * (1 - max3) + max1 * (1 - max2) * max3 + (1 - max1) * max2 * max3, 3));
-      console.log("One (46-46):", rountdToPercent(max1 * (1 - max2) * (1 - max3) + (1 - max1) * max2 * (1 - max3) + (1 - max1) * (1 - max2) * max3, 3));
-      console.log(max1row.name);
-      console.log(max2row.name);
-      console.log(max3row.name);
-    };
-    window.addEventListener("DraftKings", handleChange);
-    return () => window.removeEventListener('DraftKings', handleChange);
-  }, []);
+        logStats();
+      };
+      window.addEventListener("DraftKings", handleChange);
+      return () => window.removeEventListener('DraftKings', handleChange);
+    }, []);
+  }
 
   // Update theme when system preference changes
   useEffect(() => {
