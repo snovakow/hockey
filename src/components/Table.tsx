@@ -1,4 +1,4 @@
-type KeyNumber = "bet1" | "bet2" | "bet3";
+type KeyNumber = "gg" | "bet1" | "bet2" | "bet3";
 type RowKeyNumber = Record<KeyNumber, number>;
 
 type KeyString = "name";
@@ -11,8 +11,8 @@ type RowKeyString = Record<KeyString, string>
     & Record<"betChance2", string>
     & Record<"betChance3", string>
 
-export type KeyType = KeyString | KeyNumber | "gg";
-export type RowKey = RowKeyString & RowKeyNumber & { gg: number };
+export type KeyType = KeyString | KeyNumber;
+export type RowKey = RowKeyString & RowKeyNumber;
 
 export interface ColumnData {
     key: KeyType;
