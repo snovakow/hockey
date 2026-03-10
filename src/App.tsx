@@ -55,42 +55,6 @@ nameMap4.set("Olli Maatta", "Olli Määttä");
 nameMap4.set("Matty Beniers", "Matthew Beniers");
 nameMap4.set("Tim Stützle", "Tim Stutzle");
 
-async function loadAndParseXML(url: string, complete: (data: RowKey[]) => void) {
-  try {
-    // 1. Fetch the external XML file
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    // 2. Get the response body as plain text
-    const xmlText = await response.text();
-
-    // Fix images lacking a closing slash (e.g., <img src="..."> to <img src="..." />)
-    const renamedString = xmlText;//.replace(/<img (.*?)>/g, "<img $1 />");
-
-    // 3. Parse the XML string into an XML DOM object
-    const parser = new DOMParser();
-    const xmlDoc = parser.parseFromString(renamedString, "text/html");
-
-    const players = xmlDoc.getElementsByClassName("webix_ss_left")[0];
-    const children = players.children[0].children[0].children;
-    const cell = children[0].children[0].childNodes;
-    const name = `${cell[2].textContent?.trimEnd()}${cell[3].textContent}`;
-    console.log(`<${name}>`);
-
-    const bets = xmlDoc.getElementsByClassName("webix_ss_center")[0];
-    console.log(bets);
-
-    // complete([]);
-  } catch (error) {
-    console.error("Error loading or parsing XML:", error);
-  }
-}
-// loadAndParseXML("./odds_DraftKings.xml", (data: RowKey[]) => {
-//   console.log(data);
-// });
-
 const columns: ColumnData[] = [
   { key: "name", title: "Player" },
   { key: "gg", title: "G/GP" },
