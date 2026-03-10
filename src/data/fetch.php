@@ -1,6 +1,6 @@
 <?php
 $live = true;
-$secure = false;
+$secure = true;
 
 if ($live && $secure) {
     session_start();
