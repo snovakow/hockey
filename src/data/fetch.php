@@ -194,8 +194,6 @@ if ($live) {
     $local_file = './fanduel.json';
     if (file_put_contents($local_file, $json_string) === false) die();
 
-    if (file_put_contents('./fanduel2.json', $response) === false) die();
-
     echo "<br>Data has been written to $local_file.";
 }
 
