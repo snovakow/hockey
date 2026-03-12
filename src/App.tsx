@@ -29,11 +29,13 @@ const nameMap3 = new Map<string, string>(nameMap);
 nameMap1.set("Axel Sandin-Pellikka", "Axel Sandin Pellikka");
 nameMap1.set("Mitchell Marner", "Mitch Marner");
 nameMap1.set("Tim Stützle", "Tim Stuetzle");
+nameMap1.set("Zachary Bolduc", "Zack Bolduc");
 
 nameMap2.set("Elias Pettersson", "Elias Pettersson #40");
 
 nameMap3.set("Aliaksei Protas", "Alexei Protas");
 nameMap3.set("Artem Zub", "Artyom Zub");
+nameMap3.set("Carl Grundstrom", "Carl Grundström");
 nameMap3.set("Dmitry Orlov", "Dimitri Orlov");
 nameMap3.set("Elias Pettersson", "Elias Pettersson (1998)");
 nameMap3.set("J.J. Moser", "Janis Jérôme Moser");
@@ -45,6 +47,7 @@ nameMap3.set("Matt Boldy", "Matthew Boldy");
 nameMap3.set("Ondrej Palat", "Ondrej Palát");
 nameMap3.set("Shea Theodore", "Shea Théodore");
 nameMap3.set("Teuvo Teravainen", "Teuvo Teräväinen");
+nameMap3.set("Tommy Novak", "Thomas Novak");
 nameMap3.set("Trevor van Riemsdyk", "Trevor Van Riemsdyk");
 nameMap3.set("Vasily Podkolzin", "Vasili Podkolzin");
 
