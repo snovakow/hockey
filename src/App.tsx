@@ -84,50 +84,6 @@ const assignOdds = (row: Picks.PlayerOdds | Picks.PickOdds, trueOdds: number, be
 	row[betChanceKey] = betChanceRounded(odds);
 }
 
-const tablePlayers: Picks.PlayerOdds[] = [];
-const compilePlayerList = () => {
-	const reverse1 = new Map<string, string>();
-	const reverse2 = new Map<string, string>();
-	const reverse3 = new Map<string, string>();
-	for (const [key, value] of nameMap1.entries()) reverse1.set(value, key);
-	for (const [key, value] of nameMap2.entries()) reverse2.set(value, key);
-	for (const [key, value] of nameMap3.entries()) reverse3.set(value, key);
-
-	const allMap: Map<string, Picks.PlayerOdds> = new Map();
-	for (const item of playerOddsDraftKings) {
-		const name = reverse1.get(item.name) ?? item.name;
-		const player = new Picks.PlayerOdds(name);
-		assignOdds(player, item.odds, "bet1", "betChance1");
-		allMap.set(name, player);
-	}
-	for (const item of playerOddsFanDuel) {
-		const name = reverse2.get(item.name) ?? item.name;
-		let player = allMap.get(name);
-		if (!player) {
-			player = new Picks.PlayerOdds(name);
-			allMap.set(name, player);
-		}
-		assignOdds(player, item.odds, "bet2", "betChance2");
-	}
-	for (const item of playerOddsBetRivers) {
-		const name = reverse3.get(item.name) ?? item.name;
-		let player = allMap.get(name);
-		if (!player) {
-			player = new Picks.PlayerOdds(name);
-			allMap.set(name, player);
-		}
-		assignOdds(player, item.odds, "bet3", "betChance3");
-	}
-
-	tablePlayers.push(...allMap.values());
-	tablePlayers.sort((a, b) => a.name.localeCompare(b.name));
-}
-compilePlayerList();
-
-const makeRows = (data: DataTimsHelper[]): Picks.PickOdds[] => {
-	return data.map((item: DataTimsHelper): Picks.PickOdds => new Picks.PickOdds(item));
-}
-
 const sortFunction = (sortConfig: Picks.SortConfig) => {
 	return (a: any, b: any): number => {
 		for (const key of sortConfig.keyOrder) {
@@ -179,6 +135,57 @@ const table1Rows = makeRows(playerData["1"]);
 const table2Rows = makeRows(playerData["2"]);
 const table3Rows = makeRows(playerData["3"]);
 
+const tablePlayers: Picks.PlayerOdds[] = [];
+const compilePlayerList = () => {
+	const reverse1 = new Map<string, string>();
+	const reverse2 = new Map<string, string>();
+	const reverse3 = new Map<string, string>();
+	for (const [key, value] of nameMap1.entries()) reverse1.set(value, key);
+	for (const [key, value] of nameMap2.entries()) reverse2.set(value, key);
+	for (const [key, value] of nameMap3.entries()) reverse3.set(value, key);
+
+	const allMap: Map<string, Picks.PlayerOdds> = new Map();
+	for (const item of playerOddsDraftKings) {
+		const name = reverse1.get(item.name) ?? item.name;
+		const player = new Picks.PlayerOdds(name);
+		assignOdds(player, item.odds, "bet1", "betChance1");
+		allMap.set(name, player);
+	}
+	for (const item of playerOddsFanDuel) {
+		const name = reverse2.get(item.name) ?? item.name;
+		let player = allMap.get(name);
+		if (!player) {
+			player = new Picks.PlayerOdds(name);
+			allMap.set(name, player);
+		}
+		assignOdds(player, item.odds, "bet2", "betChance2");
+	}
+	for (const item of playerOddsBetRivers) {
+		const name = reverse3.get(item.name) ?? item.name;
+		let player = allMap.get(name);
+		if (!player) {
+			player = new Picks.PlayerOdds(name);
+			allMap.set(name, player);
+		}
+		assignOdds(player, item.odds, "bet3", "betChance3");
+	}
+
+	const set1 = new Set<string>();
+	const set2 = new Set<string>();
+	const set3 = new Set<string>();
+	for (const player of table1Rows) set1.add(player.name);
+	for (const player of table2Rows) set2.add(player.name);
+	for (const player of table3Rows) set3.add(player.name);
+	for (const player of allMap.values()) {
+		if (set1.has(player.name)) player.pick = 1;
+		if (set2.has(player.name)) player.pick = 2;
+		if (set3.has(player.name)) player.pick = 3;
+	}
+
+	tablePlayers.push(...allMap.values());
+	tablePlayers.sort((a, b) => a.name.localeCompare(b.name));
+}
+compilePlayerList();
 
 const betOddsFromMap = (row: Picks.PickOdds, map: Map<string, number>, buMap: Map<string, string>): number | undefined => {
 	const trueOdds = map.get(row.name);
@@ -189,7 +196,7 @@ const betOddsFromMap = (row: Picks.PickOdds, map: Map<string, number>, buMap: Ma
 	return trueOdds;
 }
 
-const processJSON = (json: any) => {
+const processJSON = (json: any[]) => {
 	const map = new Map<string, number>();
 
 	// const arr = [];
@@ -432,19 +439,20 @@ const logStats = () => {
 logStats();
 
 const columns: Picks.ColumnData[] = [
-	{ key: "name", title: "Player" },
-	{ key: "gg", title: "G/GP" },
-	{ key: "bet1", title: "DraftKings" },
-	{ key: "bet2", title: "FanDuel" },
-	{ key: "bet3", title: "BetRivers" },
-	{ key: "bet5v5", title: "5v5Hockey" },
+	{ key: "name", title: "Player", sort: true },
+	{ key: "gg", title: "G/GP", sort: true },
+	{ key: "bet1", title: "DraftKings", sort: true },
+	{ key: "bet2", title: "FanDuel", sort: true },
+	{ key: "bet3", title: "BetRivers", sort: true },
+	{ key: "bet5v5", title: "5v5Hockey", sort: true },
 ];
 
 const columnsPlayer: Picks.ColumnData[] = [
-	{ key: "name", title: "Player" },
-	{ key: "bet1", title: "DraftKings" },
-	{ key: "bet2", title: "FanDuel" },
-	{ key: "bet3", title: "BetRivers" },
+	{ key: "name", title: "Player", sort: true },
+	{ key: "bet1", title: "DraftKings", sort: true },
+	{ key: "bet2", title: "FanDuel", sort: true },
+	{ key: "bet3", title: "BetRivers", sort: true },
+	{ key: "pick", title: "Pick", sort: false },
 ];
 
 function App() {

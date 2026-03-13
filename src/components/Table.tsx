@@ -1,12 +1,13 @@
 import { getLogo, type Team } from "./logo";
 
-export type ColumnKeys = "name" | "bet1" | "bet2" | "bet3" | "gg" | "bet5v5";
+export type ColumnKeys = "name" | "bet1" | "bet2" | "bet3" | "gg" | "bet5v5" | "pick";
 export interface ColumnData {
     key: ColumnKeys;
     title: string;
+    sort: boolean;
 }
 
-export class PlayerOdds {
+class BaseOdds {
     name: string;
     bet1: number | null = null;
     bet2: number | null = null;
@@ -17,6 +18,10 @@ export class PlayerOdds {
     constructor(name: string) {
         this.name = name;
     }
+}
+
+export class PlayerOdds extends BaseOdds {
+    pick: number = 0;
 }
 
 export const rountdToPercent = (num: number, places: number): string => {
@@ -76,11 +81,12 @@ export function Table(props: {
                     {
                         columns.map(item => (
                             <th key={item.key}
-                                onClick={() => requestSort(item.key)}>
+                                className={item.sort ? 'sortable' : undefined}
+                                onClick={item.sort ? () => requestSort(item.key) : undefined}>
                                 <span className='cell-container'>
-                                    <span className='theader-pad'>▲</span>
+                                    {item.sort && <span className='theader-pad'>▲</span>}
                                     <span className='theader-title'>{item.title}</span>
-                                    <span className={sortConfig?.keyOrder[0] === item.key ? 'theader-sort' : 'theader-sort-hidden'}>▲</span>
+                                    {item.sort && <span className={sortConfig?.keyOrder[0] === item.key ? 'theader-sort' : 'theader-sort-hidden'}>▲</span>}
                                 </span>
                             </th>
                         ))
@@ -89,16 +95,13 @@ export function Table(props: {
             </thead>
             <tbody>
                 {sortedRows.map((row, idx) => {
-                    let img = null;
-                    if (row instanceof PickOdds) img = (
-                        <img className='td-name-logo' src={darkTheme ? row.logoDark : row.logoLight} />
-                    );
                     const picks = row instanceof PickOdds;
                     return (
                         <tr key={idx} className={idx % 2 === 0 ? 'row-color' : 'row-color-alt'}>
                             <td>
                                 <span className='cell-container'>
-                                    {img}{row.name}
+                                    {picks && (<img className='td-name-logo' src={darkTheme ? row.logoDark : row.logoLight} />)}
+                                    {row.name}
                                 </span>
                             </td>
                             {picks && (<td>{chances ? row.ggChance : row.gg.toFixed(2)}</td>)}
@@ -106,6 +109,7 @@ export function Table(props: {
                             <td>{chances ? row.betChance2 : (row.bet2 === null ? "-" : row.bet2)}</td>
                             <td>{chances ? row.betChance3 : (row.bet3 === null ? "-" : row.bet3)}</td>
                             {picks && (<td>{chances ? row.betChance5v5 : (row.bet5v5 === null ? "-" : row.bet5v5.toFixed(2))}</td>)}
+                            {!picks && (<td>{(row.pick === 0 ? "-" : row.pick)}</td>)}
                         </tr>
                     )
                 })}
