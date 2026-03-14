@@ -34,7 +34,8 @@ if ($live) {
     echo '<h2>Games</h2>';
 
     // Endpoint for today's schedule
-    $url = 'https://api-web.nhle.com/v1/schedule/now';
+    $currentDate = date('Y-m-d');
+    $url = 'https://api-web.nhle.com/v1/schedule/' . $currentDate;
     echo "{$url}<br>";
 
     // Fetch the JSON data
