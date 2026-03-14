@@ -99,6 +99,7 @@ if ($live) {
 
             $json = json_decode($response, false);
 
+            $players = [];
             foreach ($json->forwards as $player) {
                 $players[] = [
                     "id" => $player->id,
