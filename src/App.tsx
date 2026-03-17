@@ -591,11 +591,6 @@ function App() {
 		setChances(prev => !prev); // Flips the state to the opposite value
 	};
 
-	// Theme state
-	const [darkTheme, setDarkTheme] = useState(() => {
-		return window.matchMedia('(prefers-color-scheme: dark)').matches;
-	});
-
 	// Table data and sorting - regenerate when theme changes
 	const [rows1, _setRows1] = useState(table1Rows);
 	const sortedRows1 = [...rows1];
@@ -609,6 +604,10 @@ function App() {
 	const [rowsPlayer, _setRowsPlayer] = useState(playerList);
 	const sortedRowsPlayer = [...rowsPlayer];
 
+	// Theme state
+	const [darkTheme, setDarkTheme] = useState(() => {
+		return window.matchMedia('(prefers-color-scheme: dark)').matches;
+	});
 	// Update theme when system preference changes
 	useEffect(() => {
 		const handleChange = (event: MediaQueryListEvent) => {
