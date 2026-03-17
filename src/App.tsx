@@ -157,60 +157,19 @@ const table2Rows = makeRows(playerData["2"]);
 const table3Rows = makeRows(playerData["3"]);
 
 const compilePlayerList = () => {
-	const reverse1 = new Map<string, string>();
-	const reverse2 = new Map<string, string>();
-	const reverse3 = new Map<string, string>();
-	for (const [key, value] of nameMap1.entries()) reverse1.set(value, key);
-	for (const [key, value] of nameMap2.entries()) reverse2.set(value, key);
-	for (const [key, value] of nameMap3.entries()) reverse3.set(value, key);
-
 	const map1 = new Map<number, Picks.PickOdds>();
 	const map2 = new Map<number, Picks.PickOdds>();
 	const map3 = new Map<number, Picks.PickOdds>();
-	let c1 = 0;
-	let c2 = 0;
-	let c3 = 0;
 	for (const player of table1Rows) map1.set(player.playerId, player);
 	for (const player of table2Rows) map2.set(player.playerId, player);
 	for (const player of table3Rows) map3.set(player.playerId, player);
 	for (const player of playerList) {
 		const player1 = map1.get(player.playerId);
-		if (player1) {
-			player.pick = 1;
-			c1++;
-		}
+		if (player1) player.pick = 1;
 		const player2 = map2.get(player.playerId);
-		if (player2) {
-			player.pick = 2;
-			c2++;
-		}
+		if (player2) player.pick = 2;
 		const player3 = map3.get(player.playerId);
-		if (player3) {
-			player.pick = 3;
-			c3++;
-		}
-		// if (set1.has(player.fullName)) player.pick = 1;
-		// if (set2.has(player.fullName)) player.pick = 2;
-		// if (set3.has(player.fullName)) player.pick = 3;
-	}
-
-	const bet1 = new Map<string, number>();
-	for (const item of playerOddsDraftKings) {
-		const label = item.name;
-		const trueOdds = item.odds;
-		bet1.set(label, trueOdds);
-	}
-	const bet2 = new Map<string, number>();
-	for (const item of playerOddsFanDuel) {
-		const label = item.name;
-		const trueOdds = item.odds;
-		bet2.set(label, trueOdds);
-	}
-	const bet3 = new Map<string, number>();
-	for (const item of playerOddsBetRivers) {
-		const label = item.name;
-		const trueOdds = item.odds;
-		bet3.set(label, trueOdds);
+		if (player3) player.pick = 3;
 	}
 
 	type betKey = "bet1" | "bet2" | "bet3";
@@ -299,15 +258,20 @@ const compilePlayerList = () => {
 		}
 
 	};
+
+	const bet1 = new Map<string, number>();
+	for (const item of playerOddsDraftKings) bet1.set(item.name, item.odds);
+	const bet2 = new Map<string, number>();
+	for (const item of playerOddsFanDuel) bet2.set(item.name, item.odds);
+	const bet3 = new Map<string, number>();
+	for (const item of playerOddsBetRivers) bet3.set(item.name, item.odds);
 	for (const player of playerList) {
 		nameFind(player, bet1, "bet1", "betChance1");
 		nameFind(player, bet2, "bet2", "betChance2");
 		nameFind(player, bet3, "bet3", "betChance3");
 	}
-	// console.log(c1);
-	// console.log(table1Rows);
 
-	tablePlayers.sort((a, b) => a.name.localeCompare(b.name));
+	playerList.sort((a, b) => a.fullName.localeCompare(b.fullName));
 }
 compilePlayerList();
 
@@ -323,18 +287,7 @@ const betOddsFromMap = (row: Picks.PickOdds, map: Map<string, number>, buMap: Ma
 const processOddsDraftKings = () => {
 	const map = new Map<string, number>();
 
-	// const arr = [];
-	for (const item of playerOddsDraftKings) {
-		const label = item.name;
-		const trueOdds = item.odds;
-
-		// const participant = selection.participants[0];
-		// arr.push({ label, trueOdds, seoIdentifier: participant.seoIdentifier });
-		map.set(label, trueOdds);
-	}
-
-	// arr.sort((a, b) => { return a.label.localeCompare(b.label); });
-	// console.log(arr);
+	for (const item of playerOddsDraftKings) map.set(item.name, item.odds);
 
 	const err: string[] = [];
 	for (const row of table1Rows) {
