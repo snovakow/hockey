@@ -47,6 +47,7 @@ const {
 
 const oddsNameMap = new Map<string, string>();
 oddsNameMap.set("Aatu Räty", "Aatu Raty");
+oddsNameMap.set("Alex DeBrincat", "Alex Debrincat"); // BetMGM
 oddsNameMap.set("Alexander Wennberg", "Alex Wennberg"); // FanDuel
 oddsNameMap.set("Alexis Lafrenière", "Alexis Lafreniere"); // DraftKings FanDuel
 oddsNameMap.set("Aliaksei Protas", "Alexei Protas"); // BetRivers (lang)
@@ -62,6 +63,7 @@ oddsNameMap.set("Ethan Del Mastro", "Ethan del Mastro"); // FanDuel
 oddsNameMap.set("J.J. Moser", "Janis Jérôme Moser"); // BetRivers
 oddsNameMap.set("J.T. Compher", "JT Compher"); // BetRivers
 oddsNameMap.set("Jake Middleton", "Jacob Middleton"); // BetRivers (lang)
+oddsNameMap.set("James van Riemsdyk", "James Van Riemsdyk"); // BetMGM
 oddsNameMap.set("JJ Peterka", "John-Jason Peterka"); // BetRivers
 oddsNameMap.set("Josh Morrissey", "Joshua Morrissey"); // BetRivers
 oddsNameMap.set("Lenni Hameenaho", "Lenni Hämeenaho"); // BetRivers
@@ -216,8 +218,8 @@ const compilePlayerList = () => {
 		}
 	}
 
-	const removeAccents = (name: string): string => {
-		return name.normalize('NFD').replace(/\p{Diacritic}/gu, '');
+	const removeAccentsNormalize = (name: string): string => {
+		return name.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLocaleLowerCase();
 	}
 
 	type betKey = "bet1" | "bet2" | "bet3" | "bet4";
@@ -225,7 +227,7 @@ const compilePlayerList = () => {
 	const nameFind = (player: Picks.Player, oddsMap: Map<string, number>, betKey: betKey, betChanceKey: betChanceKey) => {
 		const process = (name: string | undefined): boolean => {
 			if (name === undefined) return false;
-			const decimal = oddsMap.get(name);
+			const decimal = oddsMap.get(removeAccentsNormalize(name));
 			if (decimal === undefined) return false;
 
 			const odds = trueOddsToAmerican(decimal);
@@ -234,14 +236,9 @@ const compilePlayerList = () => {
 			return true;
 		};
 
-		if (process(player.fullName)) return;
-		if (process(oddsNameMap.get(player.fullName))) return;
-
-		const baseName = removeAccents(player.fullName);
-		if (process(baseName)) return;
-
 		if (player.fullName === "Elias Pettersson") {
 			if (player.playerId === 8480012) {
+				if (betKey === 'bet1' && process("Elias Pettersson")) return; // DraftKings
 				if (betKey === 'bet2' && process("Elias Pettersson #40")) return; // FanDuel
 				if (betKey === 'bet4' && process("Elias Pettersson (1998)")) return; // BetRivers
 			}
@@ -250,7 +247,14 @@ const compilePlayerList = () => {
 				if (betKey === 'bet2' && process("Elias Pettersson #25")) return; // FanDuel
 				if (betKey === 'bet4' && process("Elias Pettersson (2004)")) return; // BetRivers
 			}
+			return;
 		}
+
+		const baseName = player.fullName;
+		if (process(baseName)) return;
+
+		const mapped = oddsNameMap.get(player.fullName);
+		if (mapped && process(mapped)) return;
 
 		const firstLang: Set<string> = new Set();
 		for (const lang in player.firstName) {
@@ -283,8 +287,7 @@ const compilePlayerList = () => {
 		item: { name: string; odds: number },
 		betMap: Map<string, number>
 	): void => {
-		betMap.set(item.name, item.odds);
-		betMap.set(removeAccents(item.name), item.odds);
+		betMap.set(removeAccentsNormalize(item.name), item.odds);
 	}
 	for (const item of playerOddsDraftKings) mapNames(item, bet1);
 	for (const item of playerOddsFanDuel) mapNames(item, bet2);
