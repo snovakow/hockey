@@ -1,7 +1,13 @@
 import React from 'react';
 import './Popup.css'; // Optional: for styling
 
-function Popup({ showPopUp, closePopUp, children }) {
+interface PopupProps {
+    showPopUp: boolean;
+    closePopUp: () => void;
+    children: React.ReactNode;
+}
+
+function Popup({ showPopUp, closePopUp, children }: PopupProps) {
     if (!showPopUp) {
         return null;
     }
