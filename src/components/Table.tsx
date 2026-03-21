@@ -65,7 +65,7 @@ export function Basic(props: {
                                 {`${game.away.place} ${game.away.name}`}
                             </span>
                         </td>
-                        <td>
+                        <td className="cell-container">
                             {game.time.toLocaleTimeString([], timeFormat)}
                         </td>
                     </tr>
@@ -252,7 +252,7 @@ export function Table(props: {
                                 {chances ? row.betChance5v5 : (row.bet5v5 === null ? "-" : row.bet5v5.toFixed(2))}
                             </td>)}
                             {!picks && (<td>{(row.pick === 0 ? "-" : row.pick)}</td>)}
-                            {!picks && (<td>{row.gameTime.toLocaleTimeString([], timeFormat)}</td>)}
+                            {!picks && (<td className="cell-container">{row.gameTime.toLocaleTimeString([], timeFormat)}</td>)}
                         </tr>
                     )
                 })}
