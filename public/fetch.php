@@ -45,7 +45,7 @@ if ($live && isset($_GET['games'])) {
 		die('Error fetching NHL data: ' . $url);
 	}
 
-	if ($savesrc) file_put_contents('./src_games.json', $response);
+	if ($savesrc) file_put_contents('./data/src_games.json', $response);
 
 	$data = json_decode($response, false);
 
@@ -68,7 +68,7 @@ if ($live && isset($_GET['games'])) {
 				die('Error fetching NHL data: ' . $url);
 			}
 
-			if ($savesrc) file_put_contents('./src_games_' . $code . '.json', $response);
+			if ($savesrc) file_put_contents('./data/src_games_' . $code . '.json', $response);
 
 			$json = json_decode($response, false);
 
@@ -100,7 +100,7 @@ if ($live && isset($_GET['games'])) {
 				die('Error fetching NHL data: ' . $url);
 			}
 
-			if ($savesrc) file_put_contents('./src_games_' . $code . '.json', $response);
+			if ($savesrc) file_put_contents('./data/src_games_' . $code . '.json', $response);
 
 			$json = json_decode($response, false);
 
@@ -127,7 +127,7 @@ if ($live && isset($_GET['games'])) {
 
 	$json_string = json_encode($games, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 
-	$local_file = './games.json';
+	$local_file = './data/games.json';
 	if (file_put_contents($local_file, $json_string) === false) {
 		die('Error saving local JSON file.');
 	}
@@ -184,7 +184,7 @@ if ($allPlayers) {
 			die('Error fetching NHL data: ' . $url);
 		}
 
-		file_put_contents('./src_games_' . $code . '.json', $response);
+		file_put_contents('./data/src_games_' . $code . '.json', $response);
 	}
 }
 
@@ -229,7 +229,7 @@ if ($live && isset($_GET['picks'])) {
 	$response = curl_exec($ch);
 	if ($response === false) echo 'cURL Error: ' . curl_error($ch);
 
-	if ($savesrc) file_put_contents('./src_helper.json', $response);
+	if ($savesrc) file_put_contents('./data/src_helper.json', $response);
 
 	$json = json_decode($response, false);
 	$json = $json->playerLists;
@@ -256,7 +256,7 @@ if ($live && isset($_GET['picks'])) {
 
 	$json_string = json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 
-	$local_file = './helper.json';
+	$local_file = './data/helper.json';
 	if (file_put_contents($local_file, $json_string) === false) {
 		die('Error saving local JSON file.');
 	}
@@ -283,7 +283,7 @@ if ($live && isset($_GET['odds'])) {
 
 	if ($response === false) die();
 
-	if ($savesrc) file_put_contents('./src_bet1.json', $response);
+	if ($savesrc) file_put_contents('./data/src_bet1.json', $response);
 
 	$data = json_decode($response, false);
 	$data = $data->selections;
@@ -298,7 +298,7 @@ if ($live && isset($_GET['odds'])) {
 	}
 
 	$json_string = json_encode($map, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-	$local_file = './bet1.json';
+	$local_file = './data/bet1.json';
 	if (file_put_contents($local_file, $json_string) === false) die();
 
 	echo "<br>Data has been written to $local_file";
@@ -343,7 +343,7 @@ if ($live && isset($_GET['odds'])) {
 
 	if ($response === false) die();
 
-	if ($savesrc) file_put_contents('./src_bet2.json', $response);
+	if ($savesrc) file_put_contents('./data/src_bet2.json', $response);
 
 	$data = json_decode($response, false);
 	$data = $data->attachments;
@@ -369,7 +369,7 @@ if ($live && isset($_GET['odds'])) {
 	}
 
 	$json_string = json_encode($map, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-	$local_file = './bet2.json';
+	$local_file = './data/bet2.json';
 	if (file_put_contents($local_file, $json_string) === false) die();
 
 	echo "<br>Data has been written to $local_file";
@@ -424,7 +424,7 @@ if ($live && isset($_GET['odds'])) {
 		else die();
 	}
 
-	if ($savesrc) file_put_contents('./src_bet3_0.json', $response);
+	if ($savesrc) file_put_contents('./data/src_bet3_0.json', $response);
 	$json_data = json_decode($response, false);
 	if (json_last_error() !== JSON_ERROR_NONE) {
 		if ($debug) die('Error decoding JSON: ' . json_last_error_msg());
@@ -486,7 +486,7 @@ if ($live && isset($_GET['odds'])) {
 			else die();
 		}
 
-		if ($savesrc) file_put_contents('./src_bet3_' . $id . '.json', $response);
+		if ($savesrc) file_put_contents('./data/src_bet3_' . $id . '.json', $response);
 
 		$json_data = json_decode($response, false);
 		if (json_last_error() !== JSON_ERROR_NONE) {
@@ -512,11 +512,11 @@ if ($live && isset($_GET['odds'])) {
 	if ($savesrc) {
 		$items = array_merge([], ...$items);
 		$json_string = json_encode($items, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-		file_put_contents('./src_bet3.json', $json_string, LOCK_EX);
+		file_put_contents('./data/src_bet3.json', $json_string, LOCK_EX);
 	}
 
 	$json_string = json_encode($map, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-	$local_file = './bet3.json';
+	$local_file = './data/bet3.json';
 
 	if (file_put_contents($local_file, $json_string, LOCK_EX) === false) die();
 
@@ -540,7 +540,7 @@ if ($live && isset($_GET['odds'])) {
 		else die();
 	}
 
-	if ($savesrc) file_put_contents('./src_bet4_1.json', $json_data);
+	if ($savesrc) file_put_contents('./data/src_bet4_1.json', $json_data);
 
 	$data_array = json_decode($json_data, false);
 	if (json_last_error() !== JSON_ERROR_NONE) {
@@ -570,7 +570,7 @@ if ($live && isset($_GET['odds'])) {
 
 		if ($json_data === false) die();
 
-		if ($savesrc) file_put_contents('./src_bet4_' . $i . '.json', $json_data);
+		if ($savesrc) file_put_contents('./data/src_bet4_' . $i . '.json', $json_data);
 
 		$data_array = json_decode($json_data, false);
 		if (json_last_error() !== JSON_ERROR_NONE) {
@@ -595,11 +595,11 @@ if ($live && isset($_GET['odds'])) {
 	if ($savesrc) {
 		$items = array_merge([], ...$items);
 		$json_string = json_encode($items, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-		file_put_contents('./src_bet4.json', $json_string, LOCK_EX);
+		file_put_contents('./data/src_bet4.json', $json_string, LOCK_EX);
 	}
 
 	$json_string = json_encode($map, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-	$local_file = './bet4.json';
+	$local_file = './data/bet4.json';
 
 	if (file_put_contents($local_file, $json_string, LOCK_EX) === false) die();
 
@@ -608,10 +608,10 @@ if ($live && isset($_GET['odds'])) {
 
 /*
 
-   5V5Hockey
+   5v5Hockey
 
 */
-if ($live && isset($_GET['odds'])) {
+if (false && $live && isset($_GET['odds'])) {
 	echo '<h2>5v5Hockey</h2>';
 	$remote_url = 'https://5v5hockey.com/ai-betting/tims-picks/';
 
@@ -620,7 +620,7 @@ if ($live && isset($_GET['odds'])) {
 
 	if ($data === false) die();
 
-	if ($savesrc) file_put_contents('./src_bet5v5.json', $data);
+	if ($savesrc) file_put_contents('./data/src_bet5v5.txt', $data);
 
 	$start = strpos($data, 'const table_1_data');
 	if ($start === false) die();
@@ -632,8 +632,10 @@ if ($live && isset($_GET['odds'])) {
 
 	$data .= 'return { table_1_data, table_2_data, table_3_data };';
 
-	$local_file = './bet5v5.txt';
+	$local_file = './data/bet5v5.txt';
 	if (file_put_contents($local_file, $data, LOCK_EX) === false) die();
 
 	echo "<br>Data has been written to $local_file";
 }
+
+die("<br><br>Complete!");
