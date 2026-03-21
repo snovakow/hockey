@@ -31,7 +31,7 @@ const loadEmbed = async (src: string) => {
 		const text = await response.text();
 		return new Function(text)();
 	} catch (error) {
-		console.log(error);
+		// console.log(error);
 		return {
 			table_1_data: [],
 			table_2_data: [],
