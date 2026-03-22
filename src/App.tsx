@@ -379,14 +379,16 @@ const logStats = () => {
 	const logs2: string[] = ["Avg:"];
 	const logs3: string[] = ["All:"];
 
+	const precision = 2;
+
 	if (max1_1row && max1_2row && max1_3row) {
 		const max1a = betChance(max1_1row[0].bet1);
 		const max2a = betChance(max1_2row[0].bet1);
 		const max3a = betChance(max1_3row[0].bet1);
 		if (max1a !== null && max2a !== null && max3a !== null) {
-			logs1.push("DraftKings: " + Picks.rountdToPercent(1 - (1 - max1a) * (1 - max2a) * (1 - max3a), 3));
-			logs2.push("DraftKings: " + Picks.rountdToPercent((max1a + max2a + max3a) / 3, 3));
-			logs3.push("DraftKings:  " + Picks.rountdToPercent(max1a * max2a * max3a, 3));
+			logs1.push("DraftKings: " + Picks.rountdToPercent(1 - (1 - max1a) * (1 - max2a) * (1 - max3a), precision));
+			logs2.push("DraftKings: " + Picks.rountdToPercent((max1a + max2a + max3a) / 3, precision));
+			logs3.push("DraftKings:  " + Picks.rountdToPercent(max1a * max2a * max3a, precision));
 		}
 	}
 
@@ -395,9 +397,9 @@ const logStats = () => {
 		const max2b = betChance(max2_2row[0].bet2);
 		const max3b = betChance(max2_3row[0].bet2);
 		if (max1b !== null && max2b !== null && max3b !== null) {
-			logs1.push("FanDuel: " + Picks.rountdToPercent(1 - (1 - max1b) * (1 - max2b) * (1 - max3b), 3));
-			logs2.push("FanDuel: " + Picks.rountdToPercent((max1b + max2b + max3b) / 3, 3));
-			logs3.push("FanDuel:  " + Picks.rountdToPercent(max1b * max2b * max3b, 3));
+			logs1.push("FanDuel: " + Picks.rountdToPercent(1 - (1 - max1b) * (1 - max2b) * (1 - max3b), precision));
+			logs2.push("FanDuel: " + Picks.rountdToPercent((max1b + max2b + max3b) / 3, precision));
+			logs3.push("FanDuel:  " + Picks.rountdToPercent(max1b * max2b * max3b, precision));
 		}
 	}
 
@@ -406,9 +408,9 @@ const logStats = () => {
 		const max2c = betChance(max3_2row[0].bet3);
 		const max3c = betChance(max3_3row[0].bet3);
 		if (max1c !== null && max2c !== null && max3c !== null) {
-			logs1.push("BetMGM: " + Picks.rountdToPercent(1 - (1 - max1c) * (1 - max2c) * (1 - max3c), 3));
-			logs2.push("BetMGM: " + Picks.rountdToPercent((max1c + max2c + max3c) / 3, 3));
-			logs3.push("BetMGM:  " + Picks.rountdToPercent(max1c * max2c * max3c, 3));
+			logs1.push("BetMGM: " + Picks.rountdToPercent(1 - (1 - max1c) * (1 - max2c) * (1 - max3c), precision));
+			logs2.push("BetMGM: " + Picks.rountdToPercent((max1c + max2c + max3c) / 3, precision));
+			logs3.push("BetMGM:  " + Picks.rountdToPercent(max1c * max2c * max3c, precision));
 		}
 	}
 
@@ -417,15 +419,15 @@ const logStats = () => {
 		const max2d = betChance(max4_2row[0].bet4);
 		const max3d = betChance(max4_3row[0].bet4);
 		if (max1d !== null && max2d !== null && max3d !== null) {
-			logs1.push("BetRivers: " + Picks.rountdToPercent(1 - (1 - max1d) * (1 - max2d) * (1 - max3d), 3));
-			logs2.push("BetRivers: " + Picks.rountdToPercent((max1d + max2d + max3d) / 3, 3));
-			logs3.push("BetRivers:  " + Picks.rountdToPercent(max1d * max2d * max3d, 3));
+			logs1.push("BetRivers: " + Picks.rountdToPercent(1 - (1 - max1d) * (1 - max2d) * (1 - max3d), precision));
+			logs2.push("BetRivers: " + Picks.rountdToPercent((max1d + max2d + max3d) / 3, precision));
+			logs3.push("BetRivers:  " + Picks.rountdToPercent(max1d * max2d * max3d, precision));
 		}
 	}
 
-	logs1.push("(70-74) 79.1  80.793 81.813");
-	logs2.push("(33-36) 38-40 42.054 43.073");
-	logs3.push("(3-4)   5.5    7.259  7.771");
+	logs1.push("(70-74) 79.1  80.79 81.81");
+	logs2.push("(33-36) 38-40 42.05 43.07");
+	logs3.push("(3-4)   5.5    7.26  7.77");
 
 	console.log(...logs1);
 	console.log(...logs2);
@@ -525,9 +527,9 @@ const logStats = () => {
 	const [avg1, avgPlayers1] = calulateAvg(table1Rows);
 	const [avg2, avgPlayers2] = calulateAvg(table2Rows);
 	const [avg3, avgPlayers3] = calulateAvg(table3Rows);
-	addLogout(`Pick 1: ${Picks.rountdToPercent(avg1, 3)} - ${avgPlayers1.join(", ")}`);
-	addLogout(`Pick 2: ${Picks.rountdToPercent(avg2, 3)} - ${avgPlayers2.join(", ")}`);
-	addLogout(`Pick 3: ${Picks.rountdToPercent(avg3, 3)} - ${avgPlayers3.join(", ")}`);
+	addLogout(`Pick 1: ${Picks.rountdToPercent(avg1, precision)} - ${avgPlayers1.join(", ")}`);
+	addLogout(`Pick 2: ${Picks.rountdToPercent(avg2, precision)} - ${avgPlayers2.join(", ")}`);
+	addLogout(`Pick 3: ${Picks.rountdToPercent(avg3, precision)} - ${avgPlayers3.join(", ")}`);
 }
 logStats();
 
