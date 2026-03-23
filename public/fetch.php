@@ -21,7 +21,20 @@ if ($live && $secure) {
 
 	if (!isset($data['code']) || !isset($data['name'])) die();
 	if (!hash_equals($csrf_token, $data['csrf_token'])) die();
-	if (!hash_equals('snovakow', $data['name']) || !hash_equals('sept2376', $data['code'])) die();
+	if (!hash_equals('snovakow', $data['name'])) die();
+
+	$source_file = './pwd.txt';
+	$stored_hash = file_get_contents($source_file);
+	$user_input_password = $data['code'];
+	if (password_verify($user_input_password, $stored_hash)) {
+		if (password_needs_rehash($stored_hash, PASSWORD_DEFAULT)) {
+			$stored_hash = password_hash($user_input_password, PASSWORD_DEFAULT);
+			file_put_contents($source_file, $stored_hash);
+		}
+	} else {
+		if ($debug) die("Password is incorrect.");
+		else die();
+	}
 }
 
 echo '<h1>Data Downloader</h1>';
