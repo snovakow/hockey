@@ -654,7 +654,7 @@ function App() {
 
 				<div className="table-container">
 					<h2>Games</h2>
-					<Picks.Basic columns={["Home", "Away", "Time"]} games={gamesList} darkTheme={darkTheme} />
+					<Picks.Basic games={gamesList} darkTheme={darkTheme} />
 				</div>
 				<div className="table-container">
 					<h2>Pick #1</h2>

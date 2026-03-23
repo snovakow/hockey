@@ -32,43 +32,41 @@ export class GameData {
 const timeFormat: Intl.DateTimeFormatOptions = { hour: '2-digit', minute: '2-digit' };
 
 export function Basic(props: {
-    columns: string[],
     games: GameData[],
     darkTheme: boolean
 }) {
-    const { columns, games, darkTheme } = props;
+    const { games, darkTheme } = props;
     return (
         <table>
-            <thead>
-                <tr>
-                    {
-                        columns.map((title, index) => (
-                            <th key={index}>
-                                <span className='cell-container'>
-                                    <span className='theader-title'>{title}</span>
-                                </span>
-                            </th>
-                        ))
-                    }
-                </tr>
-            </thead>
             <tbody>
                 {games.map((game, idx) => (
                     <tr key={idx} className={idx % 2 === 0 ? 'row-color' : 'row-color-alt'}>
                         <td>
-                            <span className='cell-container'>
-                                <img className='td-name-logo' src={darkTheme ? game.home.logoDark : game.home.logoLight} />
-                                {`${game.home.place} ${game.home.name}`}
+                            <span className='cell-container right-align'>
+                                {`${game.away.place} ${game.away.name}`}
+                                <img
+                                    className='td-name-logo'
+                                    src={darkTheme ? game.away.logoDark : game.away.logoLight}
+                                    onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                                />
                             </span>
                         </td>
+                        <td>@</td>
                         <td>
                             <span className='cell-container'>
-                                <img className='td-name-logo' src={darkTheme ? game.away.logoDark : game.away.logoLight} />
-                                {`${game.away.place} ${game.away.name}`}
+                                <img
+                                    className='td-name-logo'
+                                    src={darkTheme ? game.home.logoDark : game.home.logoLight}
+                                    onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                                />
+                                {`${game.home.place} ${game.home.name}`}
                             </span>
                         </td>
                         <td className="cell-container">
                             {game.time.toLocaleTimeString([], timeFormat)}
+                        </td>
+                        <td>
+                            <a href={game.link} target="_blank">🔗</a>
                         </td>
                     </tr>
                 )
