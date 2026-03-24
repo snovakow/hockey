@@ -105,9 +105,6 @@ th .cell-container {
 .theader-logo-bg {
   height: 2.0em;
   width: 2.0em;
-  opacity: 0.9;
-  pointer-events: none;
-  display: block;
 }
 
 .sortable {
