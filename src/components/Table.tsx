@@ -1,4 +1,5 @@
 import { type Team } from "./logo";
+import { roundToPercent } from "../utility";
 
 export const precision = 1;
 
@@ -164,7 +165,7 @@ export interface OddsItem {
 // Chance of at least one goal: 1 − e^(−μ)
 const ggChance = (x: number): string => {
     const chance = 1 - Math.exp(-x);
-    return (chance * 100).toFixed(precision) + "%";
+    return roundToPercent(chance, precision);
 }
 
 export class PickOdds {

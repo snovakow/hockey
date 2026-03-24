@@ -2,16 +2,13 @@ import { useState, useEffect } from 'react';
 import './App.css';
 import * as Picks from './components/Table';
 import Popup from './components/Popup';
+import { roundToPercent } from './utility';
 import logo1 from './images/sb-logo-16-draftkings.svg';
 import logo2 from './images/sb-logo-16-fanduel.svg';
 import logo3 from './images/sb-logo-16-mgm.svg';
 import logo4 from './images/sb-logo-16-betrivers.svg';
 
 const precision = Picks.precision;
-
-const roundToPercent = (num: number, places: number): string => {
-	return (num * 100).toFixed(places) + "%";
-};
 
 type Sportsbook = {
 	key: "bet1" | "bet2" | "bet3" | "bet4";
