@@ -241,7 +241,7 @@ export function Table(props: {
                                 {chances ? player.betChance4 : (player.bet4 === null ? "-" : player.bet4)}
                             </td>
                             {!picks && (<td>{(row.pick === 0 ? "-" : row.pick)}</td>)}
-                            {!picks && (<td className="cell-container">{row.gameTime.toLocaleTimeString([], timeFormat)}</td>)}
+                            {!picks && (<td className="cell-container">{row.gameTime?.toLocaleTimeString([], timeFormat)}</td>)}
                         </tr>
                     )
                 })}
