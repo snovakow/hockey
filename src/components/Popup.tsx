@@ -9,17 +9,14 @@ interface PopupProps {
 
 function Popup({ showPopUp, closePopUp, children }: PopupProps) {
     useEffect(() => {
+        const contentEl = document.querySelector<HTMLElement>('.content');
         if (showPopUp) {
-            // Prevent scrolling of background content
-            document.body.style.overflow = 'hidden';
+            if (contentEl) contentEl.style.overflow = 'hidden';
         } else {
-            // Restore scrolling
-            document.body.style.overflow = 'auto';
+            if (contentEl) contentEl.style.overflow = '';
         }
-
-        // Cleanup on unmount
         return () => {
-            document.body.style.overflow = 'auto';
+            if (contentEl) contentEl.style.overflow = '';
         };
     }, [showPopUp]);
 
