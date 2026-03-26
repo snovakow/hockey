@@ -317,27 +317,28 @@ compilePlayerList();
 
 const dataStats: string[][] = [];
 const logStats = () => {
-	interface AvgResult {
-		avg: number;
-		players: Picks.Player[];
-	}
 	interface Avg {
 		avg: number;
 		player: Picks.Player;
 	}
+	interface AvgResult {
+		avg: number;
+		players: Picks.Player[];
+	}
+
 	const calulateAvgRows = (rows: Picks.PickOdds[]): Avg[] => {
 		const avgs: Avg[] = [];
 		for (const row of rows) {
 			if (row.player.betAvg === null) continue;
-			avgs.push({ avg: row.player.betAvg ?? 0, player: row.player });
+			avgs.push({ avg: row.player.betAvg, player: row.player });
 		}
 
 		avgs.sort((a, b) => b.avg - a.avg);
 		return avgs;
 	}
-	const avg1rows = calulateAvgRows(table1Rows);
-	const avg2rows = calulateAvgRows(table2Rows);
-	const avg3rows = calulateAvgRows(table3Rows);
+	const avg1rows: Avg[] = calulateAvgRows(table1Rows);
+	const avg2rows: Avg[] = calulateAvgRows(table2Rows);
+	const avg3rows: Avg[] = calulateAvgRows(table3Rows);
 
 	const processRow = (rows: Avg[]): AvgResult | null => {
 		let max: AvgResult | null = null;
@@ -375,12 +376,9 @@ const logStats = () => {
 		return players.players.map(player => printName(player)).join(", ");
 	}
 
-	addLogout("Any: (70-74 81.8) - Avg: (33-36 43.1) - All: (3-4 7.8)");
-	logSection++;
-
-	if (max1row) addLogout(`Top 1: ${roundToPercent(max1row.avg, precision)} - ${names(max1row)}`);
-	if (max2row) addLogout(`Top 2: ${roundToPercent(max2row.avg, precision)} - ${names(max2row)}`);
-	if (max3row) addLogout(`Top 3: ${roundToPercent(max3row.avg, precision)} - ${names(max3row)}`);
+	if (max1row) addLogout(`1: ${roundToPercent(max1row.avg, precision)} - ${names(max1row)}`);
+	if (max2row) addLogout(`2: ${roundToPercent(max2row.avg, precision)} - ${names(max2row)}`);
+	if (max3row) addLogout(`3: ${roundToPercent(max3row.avg, precision)} - ${names(max3row)}`);
 
 	logSection++;
 
@@ -400,6 +398,10 @@ const logStats = () => {
 	const avg = roundToPercent(calcAvg(max1row.avg, max2row.avg, max3row.avg), precision);
 	const all = roundToPercent(calcAll(max1row.avg, max2row.avg, max3row.avg), precision);
 	addLogout(`Any: ${any} - Avg: ${avg} - All: ${all}`);
+	logSection++;
+
+	addLogout("Any: (70-74 81.8) - Avg: (33-36 43.1) - All: (3-4 7.8)");
+	logSection++;
 
 	let unique = true;
 	const uniqueTeams = new Set<string>();
@@ -414,67 +416,26 @@ const logStats = () => {
 
 	logSection++;
 
-	let totalMax = 0;
-	interface Avg {
+	interface Choice {
 		avg: number;
-		player: Picks.Player;
-	}
-	const calulateAvg = (avgs: Avg[]): AvgResult[] => {
-		const results: AvgResult[] = [];
-		if (avgs.length === 0) return results;
-
-		const range = 0.04;
-		let prev: AvgResult | null = null;
-		let topAvg = 0;
-
-		for (const avg of avgs) {
-			if (prev === null) {
-				topAvg = avg.avg;
-				totalMax += topAvg;
-				const result: AvgResult = { avg: topAvg, players: [avg.player] };
-				prev = result;
-				results.push(result);
-				continue;
-			}
-			if (avg.avg < topAvg - range) break;
-			if (avg.avg === prev.avg) {
-				prev.players.push(avg.player);
-			} else {
-				const result: AvgResult = { avg: avg.avg, players: [avg.player] };
-				prev = result;
-				results.push(result);
-			}
-		}
-		return results;
-	}
-
-	const results1 = calulateAvg(avg1rows);
-	const results2 = calulateAvg(avg2rows);
-	const results3 = calulateAvg(avg3rows);
-
-	type Choice = {
-		player: Picks.Player;
 		team: string;
-		pct: number;
-	};
+		player: Picks.Player;
+	}
 
-	const extractChoices = (results: AvgResult[]): Choice[] => {
-		const choices: Choice[] = [];
-		for (const result of results) {
-			for (const player of result.players) {
-				choices.push({
-					player,
-					team: player.team.code,
-					pct: result.avg,
-				});
-			}
+	const reduce = (list: Choice[], row: Picks.PickOdds) => {
+		if (row.player.betAvg !== null) {
+			const item = {
+				avg: row.player.betAvg,
+				team: row.player.team.code,
+				player: row.player
+			};
+			list.push(item);
 		}
-		return choices;
+		return list;
 	};
-
-	const choices1 = extractChoices(results1);
-	const choices2 = extractChoices(results2);
-	const choices3 = extractChoices(results3);
+	const choices1: Choice[] = table1Rows.reduce(reduce, []);
+	const choices2: Choice[] = table2Rows.reduce(reduce, []);
+	const choices3: Choice[] = table3Rows.reduce(reduce, []);
 
 	let bestCombos: { pick1: Choice; pick2: Choice; pick3: Choice; total: number }[] = [];
 	for (const pick1 of choices1) {
@@ -482,7 +443,7 @@ const logStats = () => {
 			if (pick2.team === pick1.team) continue;
 			for (const pick3 of choices3) {
 				if (pick3.team === pick1.team || pick3.team === pick2.team) continue;
-				const total = pick1.pct + pick2.pct + pick3.pct;
+				const total = pick1.avg + pick2.avg + pick3.avg;
 				const bestCombo = bestCombos[0];
 				if (!bestCombo || total > bestCombo.total) {
 					bestCombos = [{ pick1, pick2, pick3, total }];
@@ -493,17 +454,21 @@ const logStats = () => {
 		}
 	}
 
-	if (bestCombos.length > 0) {
-		const bestCombo = bestCombos[0];
-		const names1 = new Set(bestCombos.map(combo => printName(combo.pick1.player)));
-		const names2 = new Set(bestCombos.map(combo => printName(combo.pick2.player)));
-		const names3 = new Set(bestCombos.map(combo => printName(combo.pick3.player)));
-		addLogout(`Best Pick 1: ${roundToPercent(bestCombo.pick1.pct, precision)} - ${[...names1].join(", ")}`);
-		addLogout(`Best Pick 2: ${roundToPercent(bestCombo.pick2.pct, precision)} - ${[...names2].join(", ")}`);
-		addLogout(`Best Pick 3: ${roundToPercent(bestCombo.pick3.pct, precision)} - ${[...names3].join(", ")}`);
-		addLogout(`Best Total: ${roundToPercent(totalMax - bestCombo.total, precision)} drop`);
+	if (bestCombos.length === 0) return;
+
+	for (const bestCombo of bestCombos) {
+		const diff1 = roundToPercent(bestCombo.pick1.avg - max1row.avg, precision);
+		const diff2 = roundToPercent(bestCombo.pick2.avg - max2row.avg, precision);
+		const diff3 = roundToPercent(bestCombo.pick3.avg - max3row.avg, precision);
+		addLogout(`1: ${printName(bestCombo.pick1.player)} ${diff1}`);
+		addLogout(`2: ${printName(bestCombo.pick2.player)} ${diff2}`);
+		addLogout(`3: ${printName(bestCombo.pick3.player)} ${diff3}`);
+
+		logSection++;
 	}
 
+	const totalMax = max1row.avg + max2row.avg + max3row.avg;
+	addLogout(`Total: -${roundToPercent(totalMax - bestCombos[0].total, precision)}`);
 }
 logStats();
 
