@@ -11,26 +11,42 @@ function Popup({ showPopUp, closePopUp, children }: PopupProps) {
     const overlayRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        if (showPopUp) {
-            // Calculate scrollbar width to prevent layout shift
-            const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
-            
-            // Prevent background scrolling by disabling body overflow
-            document.body.style.overflow = 'hidden';
-            // Reserve space for scrollbar gutter
-            if (scrollbarWidth > 0) {
-                document.body.style.paddingRight = `${scrollbarWidth}px`;
-            }
-        } else {
+        if (!showPopUp) {
             // Restore body scrolling and remove scrollbar gutter
             document.body.style.overflow = '';
             document.body.style.paddingRight = '';
+            return;
+        }
+
+        // Calculate scrollbar width to prevent layout shift
+        const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+        
+        // Prevent background scrolling by disabling body overflow
+        document.body.style.overflow = 'hidden';
+        // Reserve space for scrollbar gutter
+        if (scrollbarWidth > 0) {
+            document.body.style.paddingRight = `${scrollbarWidth}px`;
+        }
+
+        // Block scroll events on the overlay to prevent background scrolling on touch devices
+        const preventDefault = (e: Event) => {
+            e.preventDefault();
+        };
+
+        const overlay = overlayRef.current;
+        if (overlay) {
+            overlay.addEventListener('touchmove', preventDefault, { passive: false });
+            overlay.addEventListener('wheel', preventDefault, { passive: false });
         }
 
         return () => {
             // Cleanup: restore body overflow on unmount
             document.body.style.overflow = '';
             document.body.style.paddingRight = '';
+            if (overlay) {
+                overlay.removeEventListener('touchmove', preventDefault);
+                overlay.removeEventListener('wheel', preventDefault);
+            }
         };
     }, [showPopUp]);
 
