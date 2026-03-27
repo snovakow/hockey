@@ -29,9 +29,12 @@ function Popup({ showPopUp, closePopUp, children }: PopupProps) {
                 onPointerUp={stopPropagation}
                 onWheel={stopPropagation}
             >
-                <button className="close-button" onClick={closePopUp}>
-                    &times; {/* HTML entity for 'times' (X) */}
-                </button>
+                <div className="popup-header">
+                    Stats
+                    <button className="close-button" onClick={closePopUp}>
+                        &times;
+                    </button>
+                </div>
                 <div className="popup-body">
                     {children}
                 </div>

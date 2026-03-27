@@ -604,7 +604,6 @@ function App() {
 			</header>
 			<main className='content'>
 				<Popup showPopUp={showPopup} closePopUp={() => setShowPopup(false)}>
-					<h2>Stats</h2>
 					{
 						dataStats.map((stat, i) => (
 							<div key={i} className='popup-section'>
