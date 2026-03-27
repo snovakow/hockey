@@ -90,7 +90,7 @@ export function Basic(props: {
 
             // --- Short-names toggle (first fallback) ---
             if (!shortNamesRef.current) {
-                if (tableWidth >= availableWidth - ENTER_TOLERANCE_PX) {
+                if (tableWidth > availableWidth - ENTER_TOLERANCE_PX) {
                     longModeWidthRef.current = tableWidth;
                     shortNamesRef.current = true;
                     setShortNames(true);
