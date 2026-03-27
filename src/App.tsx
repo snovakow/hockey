@@ -256,7 +256,7 @@ const compilePlayerList = () => {
 		if (mapped && process(mapped)) return;
 
 		const firstLang: Set<string> = new Set();
-		for (const lang in player.firstName) {
+		for (const lang of Object.keys(player.firstName)) {
 			if (lang === "default") continue;
 
 			const first = player.firstName[lang];
@@ -267,7 +267,7 @@ const compilePlayerList = () => {
 
 			firstLang.add(lang);
 		}
-		for (const lang in player.lastName) {
+		for (const lang of Object.keys(player.lastName)) {
 			if (lang === "default") continue;
 			if (firstLang.has(lang)) continue;
 
